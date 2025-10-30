@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KrishiSaathi</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        /* Use Inter font */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            /* gray-100 */
+        }
+
+        /* Custom styles for bottom nav */
+        .bottom-nav-item.active {
+            color: #22c55e;
+            /* green-500 */
+        }
+
+        /* Custom styles for sidebar */
+        .sidebar-item.active {
+            background-color: #dcfce7;
+            /* green-100 */
+            color: #16a34a;
+            /* green-700 */
+            font-weight: 600;
+        }
+
+        /* Hide scrollbar */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Sidebar Styles */
+        #sidebarMenu {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
+        }
+
+        #sidebarMenu.open {
+            transform: translateX(0);
+        }
+
+        #sidebarOverlay {
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        /* Error Message Style */
+        .error-message {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Modal Styles */
+        .modal {
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .modal-content {
+            transform: translateY(20px);
+            transition: transform 0.3s ease-out;
+        }
+
+        .modal.open .modal-content {
+            transform: translateY(0);
+        }
+
+        /* Chat Styles */
+        .chat-bubble-user {
+            background-color: #dcfce7;
+            /* green-100 */
+            color: #15803d;
+            /* green-700 */
+        }
+
+        .chat-bubble-ai {
+            background-color: #f3f4f6;
+            /* gray-100 */
+            color: #374151;
+            /* gray-700 */
+        }
+    </style>
+</head>
+
+<body class="no-scrollbar">
+
+    <!-- VIEW 0a: SIGN UP & PROFILE -->
+    <div id="signupView" class="min-h-screen bg-gray-50 p-6 hidden">
+        <div class="max-w-md mx-auto">
+            <div class="flex items-center gap-3 justify-center mb-6"> <span
+                    class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center"> <i data-lucide="leaf"
+                        class="w-8 h-8 text-white"></i> </span>
+                <h1 class="text-3xl font-bold text-green-700">KrishiSaathi</h1>
+            </div>
+            <h2 class="text-center text-2xl font-semibold text-gray-800 mb-2">Create Account & Profile</h2>
+            <p class="text-center text-gray-600 mb-6">Join us for personalized advice.</p>
+            <form id="signupForm" class="bg-white p-6 rounded-xl shadow-md space-y-4">
+                <div id="signupError" class="error-message hidden">Please fill all fields correctly.</div>
+                <h3 class="text-lg font-semibold border-b pb-2 mb-3">Account Details</h3>
+                <div> <label for="signupPhone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number
+                        *</label> <input type="tel" id="signupPhone" placeholder="10-digit number"
+                        class="w-full px-4 py-3 rounded-lg border-gray-300 border shadow-sm focus:border-green-500 focus:ring-green-500"
+                        required> </div>
+                <div> <label for="signupPassword" class="block text-sm font-medium text-gray-700 mb-1">Password
+                        *</label> <input type="password" id="signupPassword" placeholder="Choose password"
+                        class="w-full px-4 py-3 rounded-lg border-gray-300 border shadow-sm focus:border-green-500 focus:ring-green-500"
+                        required> </div>
+                <div> <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password
+                        *</label> <input type="password" id="confirmPassword" placeholder="Re-enter password"
+                        class="w-full px-4 py-3 rounded-lg border-gray-300 border shadow-sm focus:border-green-500 focus:ring-green-500"
+                        required> </div>
+                <h3 class="text-lg font-semibold border-b pb-2 mb-3 pt-4">Profile Details</h3>
+                <div> <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label> <input
+                        type="text" id="name"
+                        class="w-full px-4 py-3 rounded-lg border-gray-300 border shadow-sm focus:border-green-500 focus:ring-green-500"
+                        required> </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div> <label for="age" class="block text-sm font-medium text-gray-700 mb-1">Age *</label> <input
+                            type="number" id="age"
+                            class="w-full px-4 py-3 rounded-lg border-gray-300 border shadow-sm focus:border-green-500 focus:ring-green-500"
+                            required> </div>
+                    <div> <label for="gender" class="block text-sm font-medium text-gray-700 mb-1">Gender *</label>
+                        <select id="gender"
+                            class="w-full px-4 py-3 rounded-lg border-gray-300 border shadow-sm focus:border-green-500 focus:ring-green-500"
+                            required>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select> </div>
+                </div>
+                <div> <label for="language" class="block text-sm font-medium text-gray-700 mb-1">Language *</label>
+                    <select id="language"
+                        class="w-full px-4 py-3 rounded-lg border-gray-300 border shadow-sm focus:border-green-500 focus:ring-green-500"
+                        required>
+                        <option value="en">English</option>
+                        <option value="hi">Hindi (हिंदी)</option>
+                        <option value="pa">Punjabi (ਪੰਜਾਬੀ)</option>
+                        <option value="mr">Marathi (मराठी)</option>
+                    </select> </div>
+                <div> <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Location *</label>
+                    <input type="text" id="location"
+                        class="w-full px-4 py-3 rounded-lg border-gray-300 border shadow-sm focus:border-green-500 focus:ring-green-500"
+                        placeholder="Panchkula" required> </div>
+                <div> <label for="pincode" class="block text-sm font-medium text-gray-700 mb-1">Pin Code *</label>
+                    <input type="number" id="pincode"
+                        class="w-full px-4 py-3 rounded-lg border-gray-300 border shadow-sm focus:border-green-500 focus:ring-green-500"
+                        required> </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div> <label for="income" class="block text-sm font-medium text-gray-700 mb-1">Annual Income
+                            *</label> <select id="income"
+                            class="w-full px-4 py-3 rounded-lg border-gray-300 border shadow-sm focus:border-green-500 focus:ring-green-500"
+                            required>
+                            <option value="<1L">&lt; ₹1 Lakh</option>
+                            <option value="1-3L">₹1-3 Lakhs</option>
+                            <option value="3-5L">₹3-5 Lakhs</option>
+                            <option value=">5L">&gt; ₹5 Lakhs</option>
+                        </select> </div>
+                    <div> <label for="familySize" class="block text-sm font-medium text-gray-700 mb-1">Family Size
+                            *</label> <input type="number" id="familySize"
+                            class="w-full px-4 py-3 rounded-lg border-gray-300 border shadow-sm focus:border-green-500 focus:ring-green-500"
+                            min="1" value="1" required> </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div> <label for="landSize" class="block text-sm font-medium text-gray-700 mb-1">Land (acres)
+                            *</label> <input type="number" id="landSize"
+                            class="w-full px-4 py-3 rounded-lg border-gray-300 border shadow-sm focus:border-green-500 focus:ring-green-500"
+                            min="0" step="0.1" value="1" required> </div>
+                    <div> <label for="cropType" class="block text-sm font-medium text-gray-700 mb-1">Main Crop *</label>
+                        <input type="text" id="cropType"
+                            class="w-full px-4 py-3 rounded-lg border-gray-300 border shadow-sm focus:border-green-500 focus:ring-green-500"
+                            placeholder="e.g., Wheat" required> </div>
+                </div>
+                <button type="submit"
+                    class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:bg-green-700 transition">
+                    Sign Up & Start </button>
+                <p class="text-center text-sm text-gray-600 mt-4"> Already have an account? <button type="button"
+                        id="goToLogin" class="font-medium text-green-600 hover:text-green-700">Log In</button> </p>
+            </form>
+            <p class="text-center text-xs text-gray-500 mt-4">Note: Uses localStorage. Not secure.</p>
+        </div>
+    </div>
+
+    <!-- VIEW 0b: LOGIN SCREEN -->
+    <div id="loginView" class="min-h-screen bg-gray-50 p-6 flex items-center justify-center hidden">
+        <div class="max-w-md w-full">
+            <div class="flex items-center gap-3 justify-center mb-6"> <span
+                    class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center"> <i data-lucide="leaf"
+                        class="w-8 h-8 text-white"></i> </span>
+                <h1 class="text-3xl font-bold text-green-700">KrishiSaathi</h1>
+            </div>
+            <h2 class="text-center text-2xl font-semibold text-gray-800 mb-2">Welcome Back!</h2>
+            <p class="text-center text-gray-600 mb-6">Log in to your account.</p>
+            <form id="loginForm" class="bg-white p-6 rounded-xl shadow-md space-y-4">
+                <div id="loginError" class="error-message hidden">Invalid phone or password.</div>
+                <div> <label for="loginPhone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                    <input type="tel" id="loginPhone"
+                        class="w-full px-4 py-3 rounded-lg border-gray-300 border shadow-sm focus:border-green-500 focus:ring-green-500"
+                        required> </div>
+                <div> <label for="loginPassword" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="loginPassword"
+                        class="w-full px-4 py-3 rounded-lg border-gray-300 border shadow-sm focus:border-green-500 focus:ring-green-500"
+                        required> </div>
+                <button type="submit"
+                    class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:bg-green-700 transition">
+                    Log In </button>
+                <p class="text-center text-sm text-gray-600 mt-4"> Don't have an account? <button type="button"
+                        id="goToSignup" class="font-medium text-green-600 hover:text-green-700">Sign Up</button> </p>
+            </form>
+            <p class="text-center text-xs text-gray-500 mt-4">Note: Uses localStorage. Not secure.</p>
+        </div>
+    </div>
+
+    <!-- VIEW 1: BOOKING SCREEN -->
+    <div id="bookingView" class="min-h-screen bg-gray-50 p-6 hidden">
+        <div class="max-w-md mx-auto">
+            <header class="flex items-center mb-6"> <button id="backFromBooking" class="mr-4"> <i
+                        data-lucide="arrow-left" class="w-6 h-6 text-gray-700"></i> </button>
+                <h1 class="text-2xl font-bold text-gray-800">Book Equipment</h1>
+            </header>
+            <form id="bookingForm" class="bg-white p-6 rounded-xl shadow-md space-y-4">
+                <div class="border-b pb-3 mb-3"> <label
+                        class="block text-sm font-medium text-gray-500">Equipment</label>
+                    <p id="bookingEquipmentName" class="text-lg font-semibold text-gray-800">Loading...</p>
+                    <p id="bookingEquipmentPrice" class="text-sm text-gray-600">Loading price...</p>
+                </div>
+                <div> <label for="bookingDate" class="block text-sm font-medium text-gray-700 mb-1">Date *</label>
+                    <input type="date" id="bookingDate"
+                        class="w-full px-4 py-3 rounded-lg border-gray-300 border shadow-sm focus:border-green-500 focus:ring-green-500"
+                        required> </div>
+                <div> <label for="bookingDuration" class="block text-sm font-medium text-gray-700 mb-1">Duration/Time
+                        *</label> <input type="text" id="bookingDuration" placeholder="e.g., 2 hours, 9 AM - 1 PM"
+                        class="w-full px-4 py-3 rounded-lg border-gray-300 border shadow-sm focus:border-green-500 focus:ring-green-500"
+                        required> </div>
+                <h3 class="text-lg font-semibold border-b pb-2 mb-3 pt-4">Your Details</h3>
+                <div> <label for="bookingName" class="block text-sm font-medium text-gray-700 mb-1">Name</label> <input
+                        type="text" id="bookingName"
+                        class="w-full px-4 py-3 rounded-lg border-gray-300 bg-gray-100 border shadow-sm" readonly>
+                </div>
+                <div> <label for="bookingPhone" class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                    <input type="tel" id="bookingPhone"
+                        class="w-full px-4 py-3 rounded-lg border-gray-300 bg-gray-100 border shadow-sm" readonly>
+                </div>
+                <div> <label for="bookingLocation" class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                    <input type="text" id="bookingLocation"
+                        class="w-full px-4 py-3 rounded-lg border-gray-300 bg-gray-100 border shadow-sm" readonly>
+                </div>
+                <button type="submit"
+                    class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:bg-green-700 transition">
+                    Confirm Booking </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- VIEW 2: MAIN APP -->
+    <div id="mainAppView" class="min-h-screen hidden">
+        <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden opacity-0"></div>
+        <div id="sidebarMenu" class="fixed top-0 right-0 w-72 h-full bg-white shadow-xl z-40 p-6 flex flex-col">
+            <div>
+                <div class="flex justify-between items-center mb-8">
+                    <div class="flex items-center gap-2"> <span
+                            class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center"> <i
+                                data-lucide="leaf" class="w-6 h-6 text-white"></i> </span>
+                        <div>
+                            <h1 class="text-xl font-bold text-green-700">KrishiSaathi</h1>
+                            <p class="text-xs text-gray-500">Smart Farming</p>
+                        </div>
+                    </div> <button id="closeSidebarButton"> <i data-lucide="x" class="w-6 h-6 text-gray-600"></i>
+                    </button>
+                </div>
+                <nav class="space-y-2"> <a href="#"
+                        class="sidebar-item flex items-center gap-3 p-3 rounded-lg text-gray-700"
+                        data-content="dashboard"> <i data-lucide="home" class="w-5 h-5"></i> <span>Dashboard</span> </a>
+                    <a href="#" class="sidebar-item flex items-center gap-3 p-3 rounded-lg text-gray-700"
+                        data-content="weather"> <i data-lucide="cloud-sun" class="w-5 h-5"></i> <span>Weather</span>
+                    </a> <a href="#" class="sidebar-item flex items-center gap-3 p-3 rounded-lg text-gray-700"
+                        data-content="suggestions"> <i data-lucide="lightbulb" class="w-5 h-5"></i>
+                        <span>Suggestions</span> </a> <a href="#"
+                        class="sidebar-item flex items-center gap-3 p-3 rounded-lg text-gray-700" data-content="market">
+                        <i data-lucide="trending-up" class="w-5 h-5"></i> <span>Market Prices</span> </a> <a href="#"
+                        class="sidebar-item flex items-center gap-3 p-3 rounded-lg text-gray-700"
+                        data-content="techniques"> <i data-lucide="sprout" class="w-5 h-5"></i> <span>Techniques</span>
+                    </a> <a href="#" class="sidebar-item flex items-center gap-3 p-3 rounded-lg text-gray-700"
+                        data-content="marketplace"> <i data-lucide="store" class="w-5 h-5"></i> <span>Marketplace</span>
+                    </a> <a href="#" class="sidebar-item flex items-center gap-3 p-3 rounded-lg text-gray-700"
+                        data-content="equipment"> <i data-lucide="tractor" class="w-5 h-5"></i> <span>Equipment</span>
+                    </a> <a href="#" class="sidebar-item flex items-center gap-3 p-3 rounded-lg text-gray-700"
+                        data-content="schemes"> <i data-lucide="scroll-text" class="w-5 h-5"></i> <span>Schemes</span>
+                    </a> </nav>
+            </div>
+            <div class="mt-auto pt-4 border-t"> <button id="logoutButton"
+                    class="w-full text-sm text-center text-red-600 hover:font-semibold py-2"> Logout </button> </div>
+        </div>
+        <header class="sticky top-0 z-20 bg-white shadow-sm p-4 flex justify-between items-center">
+            <!-- API Key Warning Banner -->
+            <div id="apiKeyWarning"
+                class="hidden fixed top-0 left-0 right-0 bg-yellow-100 border-b-2 border-yellow-400 text-yellow-800 px-4 py-2 text-sm z-30">
+                <div class="max-w-4xl mx-auto flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                        <span>⚠️ API Keys not configured. Weather and AI features require API keys in .env file. See
+                            README.md for setup instructions.</span>
+                    </div>
+                    <button id="closeApiWarning" class="font-bold text-yellow-900 hover:text-yellow-950">✕</button>
+                </div>
+            </div>
+            <button id="backButton" class="hidden pr-2"> <i data-lucide="arrow-left" class="w-6 h-6 text-gray-700"></i>
+            </button>
+            <div class="flex items-center gap-2 flex-grow"> <span
+                    class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center"> <i data-lucide="leaf"
+                        class="w-5 h-5 text-white"></i> </span>
+                <div>
+                    <h1 class="text-lg font-bold text-green-700">KrishiSaathi</h1>
+                    <p id="regionalAppName" class="text-sm font-semibold text-green-600"></p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 pr-2"> <select id="languageSwitcher"
+                    class="border border-gray-300 rounded-md text-sm p-1">
+                    <option value="en">English</option>
+                    <option value="hi">हिन्दी</option>
+                    <option value="pa">ਪੰਜਾਬੀ</option>
+                    <option value="mr">मराठी</option>
+                </select> </div> <button id="openSidebarButton" class="pl-2"> <i data-lucide="menu"
+                    class="w-6 h-6 text-gray-700"></i> </button>
+        </header>
+        <main class="pb-24 p-4">
+            <!-- Dashboard -->
+            <div id="content_dashboard" class="main-content space-y-5">
+                <div class="bg-green-500 text-white p-5 rounded-xl shadow-lg relative overflow-hidden"> <i
+                        data-lucide="sun"
+                        class="absolute -top-4 -right-4 w-28 h-28 text-white opacity-20 transform rotate-12"></i>
+                    <div class="relative z-10">
+                        <h2 class="text-2xl font-bold" id="welcomeName">Welcome!</h2>
+                        <p class="text-sm font-medium mt-1" id="regionalWelcome">Your Companion</p>
+                        <p class="text-xs mt-3 opacity-90">...</p>
+                    </div>
+                </div>
+                <div id="dashboardWeatherCard" class="bg-blue-500 text-white p-5 rounded-xl shadow-lg space-y-3">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-5xl font-bold" id="dashWeatherTemp">--°C</p>
+                            <p class="text-lg font-medium" id="dashWeatherDesc">...</p>
+                            <p class="text-sm font-semibold mt-1" id="dashWeatherLocation">...</p>
+                        </div> <i id="dashWeatherIcon" data-lucide="cloud-sun" class="w-16 h-16 opacity-80"></i>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-center">
+                        <div class="bg-white/30 p-2 rounded-lg">
+                            <p class="text-xs" data-i18n="humidity">Humidity</p>
+                            <p class="font-bold text-base" id="dashWeatherHumidity">--%</p>
+                        </div>
+                        <div class="bg-white/30 p-2 rounded-lg">
+                            <p class="text-xs" data-i18n="wind">Wind</p>
+                            <p class="font-bold text-base" id="dashWeatherWind">-- km/h</p>
+                        </div>
+                        <div class="bg-white/30 p-2 rounded-lg">
+                            <p class="text-xs" data-i18n="rain">Rain (1hr)</p>
+                            <p class="font-bold text-base" id="dashWeatherRain">-- mm</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-md">
+                    <div class="flex items-center gap-3 mb-4"> <i data-lucide="test-tube-2"
+                            class="w-6 h-6 text-yellow-700"></i>
+                        <h3 class="text-xl font-bold text-gray-800" data-i18n="soil">Soil</h3>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600"><span data-i18n="basedOn">Based on</span> <span id="soilLocation">...</span>, <span
+                                id="soilCrop">...</span> (Mock):</p>
+                        <div class="grid grid-cols-3 gap-2 text-center mt-2">
+                            <div class="bg-gray-100 p-2 rounded-lg">N: <span
+                                    class="font-bold text-green-600">Good</span></div>
+                            <div class="bg-gray-100 p-2 rounded-lg">P: <span
+                                    class="font-bold text-yellow-600">Low</span></div>
+                            <div class="bg-gray-100 p-2 rounded-lg">K: <span
+                                    class="font-bold text-green-600">Good</span></div>
+                        </div>
+                        <p class="text-sm text-gray-700 mt-2" data-i18n="recommend">Recommend: Add DAP.</p>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-md">
+                    <div class="flex items-center gap-3 mb-4"> <i data-lucide="trending-up"
+                            class="w-6 h-6 text-green-600"></i>
+                        <h3 class="text-xl font-bold" data-i18n="marketPrices">Market Prices</h3>
+                    </div>
+                    <div id="dashboardMarketPrices" class="space-y-3 max-h-60 overflow-y-auto no-scrollbar"></div>
+                    <button id="viewAllPricesBtn" class="mt-4 text-green-600 font-semibold flex items-center gap-2">
+                        <span data-i18n="viewAll">View All</span> <i data-lucide="arrow-right" class="w-4 h-4"></i> </button>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-md">
+                    <div class="flex items-center gap-3 mb-4"> <i data-lucide="alert-triangle"
+                            class="w-6 h-6 text-orange-600"></i>
+                        <h3 class="text-xl font-bold">Climate Alert</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <p class="font-semibold">Heavy Rain (Mock)</p>
+                            <p class="text-sm">~2 Weeks</p>
+                        </div>
+                        <hr>
+                        <div class="border-l-4 border-yellow-500 pl-4">
+                            <p class="font-semibold">Drought Possibility (Mock)</p>
+                            <p class="text-sm">~1 Month</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Weather -->
+            <div id="content_weather" class="main-content hidden space-y-5">
+                <h2 class="text-2xl font-bold text-gray-800">Weather</h2>
+                <p class="text-gray-600 -mt-4">Accurate data</p>
+                <div class="flex gap-2"> <input type="text" id="locationInput" placeholder="Location..."
+                        class="flex-1 w-full px-4 py-3 rounded-lg border-gray-300 border shadow-sm"> <button
+                        id="searchWeatherBtn" class="bg-green-500 text-white p-3 rounded-lg shadow-md"> <i
+                            data-lucide="search" class="w-6 h-6"></i> </button> </div>
+                <div class="flex items-center gap-2 text-gray-700"> <i data-lucide="map-pin"
+                        class="w-5 h-5 text-green-600"></i> <span class="font-semibold" id="weatherLocation">...</span>
+                </div>
+                <div id="weatherError" class="hidden bg-red-100 border-red-400 text-red-700 px-4 py-3 rounded-lg"> Error
+                </div>
+                <div class="bg-blue-500 text-white p-6 rounded-xl shadow-lg space-y-5">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-6xl font-bold" id="weatherTemp">--°C</p>
+                            <p class="text-xl font-medium" id="weatherDesc">...</p>
+                        </div> <i id="weatherIcon" data-lucide="cloud-sun" class="w-20 h-20 opacity-80"></i>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white/30 p-4 rounded-lg flex items-center gap-3"> <i data-lucide="droplets"
+                                class="w-6 h-6"></i>
+                            <div>
+                                <p>Humidity</p>
+                                <p class="font-bold text-lg" id="weatherHumidity">--%</p>
+                            </div>
+                        </div>
+                        <div class="bg-white/30 p-4 rounded-lg flex items-center gap-3"> <i data-lucide="wind"
+                                class="w-6 h-6"></i>
+                            <div>
+                                <p>Wind</p>
+                                <p class="font-bold text-lg" id="weatherWind">-- km/h</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white/30 p-4 rounded-lg flex items-center gap-3"> <i data-lucide="cloud-drizzle"
+                            class="w-6 h-6"></i>
+                        <div>
+                            <p>Rain (1hr)</p>
+                            <p class="font-bold text-lg" id="weatherRain">-- mm</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Suggestions -->
+            <div id="content_suggestions" class="main-content hidden space-y-5">
+                <h2 class="text-2xl font-bold">Suggestions</h2>
+                <p class="text-gray-600 -mt-4">For <span id="suggestionLocation">...</span></p>
+                <div id="cropSuggestionsList" class="space-y-6"> Loading... </div>
+            </div>
+            <!-- Market -->
+            <div id="content_market" class="main-content hidden space-y-5">
+                <h2 class="text-2xl font-bold">Market Prices</h2>
+                <div id="mainMarketPrices" class="bg-white p-4 rounded-lg shadow-md space-y-4"></div>
+            </div>
+            <!-- Techniques -->
+            <div id="content_techniques" class="main-content hidden space-y-5">
+                <h2 class="text-2xl font-bold">Crop Techniques</h2>
+                <p class="text-gray-600 -mt-4">For <span id="techniquesCropName">...</span></p>
+                <!-- AI Farming Assistant -->
+                <div class="bg-white text-gray-800 p-5 rounded-xl shadow-lg">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i data-lucide="sparkles" class="w-6 h-6 text-purple-600"></i>
+                        <h3 class="text-xl font-bold">AI Farming Assistant</h3>
+                    </div>
+                    <!-- Chat display area -->
+                    <div id="chatMessages"
+                        class="h-64 overflow-y-auto mb-4 p-3 bg-gray-50 rounded-lg space-y-3 border border-gray-200">
+                        <div class="chat-bubble-ai p-3 rounded-lg max-w-[80%]">Ask me anything about farming!</div>
+                        <!-- Messages will be added here -->
+                    </div>
+                    <div id="chatError" class="error-message hidden mb-2">Could not connect to AI.</div>
+                    <div id="chatLoading" class="text-sm text-gray-500 italic hidden mb-2">AI is thinking...</div>
+                    <!-- Input area -->
+                    <div class="flex gap-2">
+                        <input type="text" id="chatInput" placeholder="Ask a farming question..."
+                            class="flex-1 w-full px-4 py-3 rounded-lg border-gray-300 border shadow-sm focus:border-green-500 focus:ring-green-500">
+                        <button id="chatSendButton"
+                            class="bg-purple-600 text-white p-3 rounded-lg shadow-md hover:bg-purple-700">
+                            <i data-lucide="send" class="w-6 h-6"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Personalized Techniques List -->
+                <div id="techniquesList" class="space-y-4 pt-4"></div>
+            </div>
+            <!-- Schemes -->
+            <div id="content_schemes" class="main-content hidden space-y-4">
+                <h2 class="text-2xl font-bold" data-i18n="govtSchemes">Govt Schemes</h2>
+                <p class="text-gray-600 -mt-4" data-i18n="eligibility">Eligibility:</p>
+                
+                <!-- PM-KISAN -->
+                <div class="bg-white p-5 rounded-lg shadow-md border-l-4 border-green-500">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold py-1 px-3 bg-green-200 text-green-800 rounded-full" data-i18n="likely">Likely</span>
+                        <i data-lucide="external-link" class="w-4 h-4 text-gray-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-green-700 mt-2">PM-KISAN</h3>
+                    <p class="text-sm text-gray-600 mt-1">Pradhan Mantri Kisan Samman Nidhi</p>
+                    <p class="mt-3 text-sm text-gray-700">₹6,000/year in three installments of ₹2,000 each directly to bank accounts of farmer families.</p>
+                    <div class="mt-3 flex gap-2 flex-wrap">
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded">All Farmers</span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded">Direct Benefit</span>
+                    </div>
+                    <a href="https://pmkisan.gov.in/" target="_blank" rel="noopener noreferrer"
+                        class="text-blue-600 hover:text-blue-800 font-semibold mt-3 inline-flex items-center gap-1">
+                        <span data-i18n="learnMore">Learn More</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- PMFBY -->
+                <div class="bg-white p-5 rounded-lg shadow-md border-l-4 border-blue-500">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold py-1 px-3 bg-green-200 text-green-800 rounded-full" data-i18n="likely">Likely</span>
+                        <i data-lucide="external-link" class="w-4 h-4 text-gray-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-blue-700 mt-2">PMFBY</h3>
+                    <p class="text-sm text-gray-600 mt-1">Pradhan Mantri Fasal Bima Yojana</p>
+                    <p class="mt-3 text-sm text-gray-700">Crop insurance scheme covering yield losses due to natural calamities. Premium: 2% for Kharif, 1.5% for Rabi.</p>
+                    <div class="mt-3 flex gap-2 flex-wrap">
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded">Crop Insurance</span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded">Risk Coverage</span>
+                    </div>
+                    <a href="https://pmfby.gov.in/" target="_blank" rel="noopener noreferrer"
+                        class="text-blue-600 hover:text-blue-800 font-semibold mt-3 inline-flex items-center gap-1">
+                        <span data-i18n="learnMore">Learn More</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- KCC -->
+                <div class="bg-white p-5 rounded-lg shadow-md border-l-4 border-purple-500">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold py-1 px-3 bg-green-200 text-green-800 rounded-full" data-i18n="likely">Likely</span>
+                        <i data-lucide="external-link" class="w-4 h-4 text-gray-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-purple-700 mt-2">KCC</h3>
+                    <p class="text-sm text-gray-600 mt-1">Kisan Credit Card</p>
+                    <p class="mt-3 text-sm text-gray-700">Short-term credit for crop cultivation with interest subvention of 3%. Loan up to ₹3 lakh at 7% interest.</p>
+                    <div class="mt-3 flex gap-2 flex-wrap">
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded">Credit Facility</span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded">Low Interest</span>
+                    </div>
+                    <a href="https://www.india.gov.in/spotlight/kisan-credit-card-kcc" target="_blank" rel="noopener noreferrer"
+                        class="text-blue-600 hover:text-blue-800 font-semibold mt-3 inline-flex items-center gap-1">
+                        <span data-i18n="learnMore">Learn More</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- Soil Health Card -->
+                <div class="bg-white p-5 rounded-lg shadow-md border-l-4 border-yellow-500">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold py-1 px-3 bg-yellow-200 text-yellow-800 rounded-full">Available</span>
+                        <i data-lucide="external-link" class="w-4 h-4 text-gray-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-yellow-700 mt-2">Soil Health Card Scheme</h3>
+                    <p class="text-sm text-gray-600 mt-1">Free Soil Testing</p>
+                    <p class="mt-3 text-sm text-gray-700">Free soil testing every 3 years with recommendations for nutrients and fertilizers to improve soil health and productivity.</p>
+                    <div class="mt-3 flex gap-2 flex-wrap">
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded">Soil Testing</span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded">Free Service</span>
+                    </div>
+                    <a href="https://soilhealth.dac.gov.in/" target="_blank" rel="noopener noreferrer"
+                        class="text-blue-600 hover:text-blue-800 font-semibold mt-3 inline-flex items-center gap-1">
+                        <span data-i18n="learnMore">Learn More</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- PM Kusum -->
+                <div class="bg-white p-5 rounded-lg shadow-md border-l-4 border-orange-500">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold py-1 px-3 bg-orange-200 text-orange-800 rounded-full">Check Eligibility</span>
+                        <i data-lucide="external-link" class="w-4 h-4 text-gray-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-orange-700 mt-2">PM-KUSUM</h3>
+                    <p class="text-sm text-gray-600 mt-1">Solar Pump Subsidy</p>
+                    <p class="mt-3 text-sm text-gray-700">Financial support for solar pumps and grid-connected solar power plants. Up to 60% subsidy on solar pump installation.</p>
+                    <div class="mt-3 flex gap-2 flex-wrap">
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded">Solar Energy</span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded">60% Subsidy</span>
+                    </div>
+                    <a href="https://pmkusum.mnre.gov.in/" target="_blank" rel="noopener noreferrer"
+                        class="text-blue-600 hover:text-blue-800 font-semibold mt-3 inline-flex items-center gap-1">
+                        <span data-i18n="learnMore">Learn More</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- National Mission for Sustainable Agriculture -->
+                <div class="bg-white p-5 rounded-lg shadow-md border-l-4 border-teal-500">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold py-1 px-3 bg-teal-200 text-teal-800 rounded-full">Available</span>
+                        <i data-lucide="external-link" class="w-4 h-4 text-gray-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-teal-700 mt-2">NMSA</h3>
+                    <p class="text-sm text-gray-600 mt-1">National Mission for Sustainable Agriculture</p>
+                    <p class="mt-3 text-sm text-gray-700">Promotes sustainable farming practices including water conservation, soil health, and resource efficiency with financial assistance.</p>
+                    <div class="mt-3 flex gap-2 flex-wrap">
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded">Sustainable Farming</span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded">Training & Support</span>
+                    </div>
+                    <a href="https://agricoop.nic.in/en/nmsa" target="_blank" rel="noopener noreferrer"
+                        class="text-blue-600 hover:text-blue-800 font-semibold mt-3 inline-flex items-center gap-1">
+                        <span data-i18n="learnMore">Learn More</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- Paramparagat Krishi Vikas Yojana -->
+                <div class="bg-white p-5 rounded-lg shadow-md border-l-4 border-lime-500">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold py-1 px-3 bg-lime-200 text-lime-800 rounded-full">Available</span>
+                        <i data-lucide="external-link" class="w-4 h-4 text-gray-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-lime-700 mt-2">PKVY</h3>
+                    <p class="text-sm text-gray-600 mt-1">Organic Farming Scheme</p>
+                    <p class="mt-3 text-sm text-gray-700">Financial assistance of ₹50,000/hectare for 3 years to farmer groups for organic farming through cluster formation.</p>
+                    <div class="mt-3 flex gap-2 flex-wrap">
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded">Organic Farming</span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded">₹50k/hectare</span>
+                    </div>
+                    <a href="https://pgsindia-ncof.gov.in/pkvy/Index.aspx" target="_blank" rel="noopener noreferrer"
+                        class="text-blue-600 hover:text-blue-800 font-semibold mt-3 inline-flex items-center gap-1">
+                        <span data-i18n="learnMore">Learn More</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- National Agriculture Market -->
+                <div class="bg-white p-5 rounded-lg shadow-md border-l-4 border-indigo-500">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold py-1 px-3 bg-indigo-200 text-indigo-800 rounded-full">Active</span>
+                        <i data-lucide="external-link" class="w-4 h-4 text-gray-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-indigo-700 mt-2">e-NAM</h3>
+                    <p class="text-sm text-gray-600 mt-1">National Agriculture Market</p>
+                    <p class="mt-3 text-sm text-gray-700">Online trading platform connecting 1,000+ mandis across India for transparent price discovery and better market access.</p>
+                    <div class="mt-3 flex gap-2 flex-wrap">
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded">Online Trading</span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded">Better Prices</span>
+                    </div>
+                    <a href="https://www.enam.gov.in/web/" target="_blank" rel="noopener noreferrer"
+                        class="text-blue-600 hover:text-blue-800 font-semibold mt-3 inline-flex items-center gap-1">
+                        <span data-i18n="learnMore">Learn More</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+            </div>
+            <!-- Marketplace -->
+            <div id="content_marketplace" class="main-content hidden space-y-4">
+                <h2 class="text-2xl font-bold">Marketplace</h2>
+                <p class="text-gray-600 -mt-4">Sell <span id="marketCrop2">...</span></p>
+                <div class="bg-white p-4 rounded-lg shadow-md">
+                    <h3 class="text-lg font-bold text-green-700">Local Mandi</h3>
+                    <p class="mt-1 text-sm">Loc: <span id="marketLocation">...</span> (~5km)</p>
+                    <p class="mt-1 font-semibold">Price: ~₹2,040 (Mock)</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-md">
+                    <h3 class="text-lg font-bold text-green-700">AgriFuture</h3>
+                    <p class="mt-1 text-sm">Loc: District Hub (~30km)</p>
+                    <p class="mt-1 font-semibold">Price: ~₹2,100 (min 50q)</p>
+                </div>
+            </div>
+            <!-- Equipment -->
+            <div id="content_equipment" class="main-content hidden space-y-4">
+                <h2 class="text-2xl font-bold">Equipment Rental</h2>
+                <p class="text-gray-600 -mt-4">Rent near you.</p>
+                <div id="equipmentList" class="grid grid-cols-2 gap-4"></div>
+            </div>
+        </main>
+        <button id="aiHelpButton"
+            class="fixed bottom-24 right-5 bg-green-500 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-lg z-20">
+            <i data-lucide="help-circle" class="w-8 h-8"></i> </button>
+        <div id="aiHelpModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end">
+            <div class="bg-white w-full rounded-t-2xl p-6 shadow-lg">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold">Help</h3> <button id="closeAiModal"> <i data-lucide="x"
+                            class="w-6 h-6 text-gray-500"></i> </button>
+                </div>
+                <div class="space-y-3"> <a href="tel:1800..."
+                        class="flex items-center gap-3 p-4 bg-gray-100 rounded-lg"> <i data-lucide="phone"
+                            class="w-6 h-6 text-green-600"></i>
+                        <div>
+                            <p>Helpline</p>
+                            <p class="text-xs">1800...</p>
+                        </div>
+                    </a> <a href="#" class="flex items-center gap-3 p-4 bg-gray-100 rounded-lg"> <i
+                            data-lucide="map-pin" class="w-6 h-6 text-green-600"></i>
+                        <div>
+                            <p>Find Hub</p>
+                            <p class="text-xs">Nearest Kendra</p>
+                        </div>
+                    </a> <a href="https://wa.me/+91731758522" target="_blank"
+                        class="flex items-center gap-3 p-4 bg-gray-100 rounded-lg"> <svg class="w-6 h-6 text-green-600"
+                            fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.412 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.576 1.556 5.575 1.556 5.478 0 9.961-4.482 9.961-9.961 0-5.478-4.482-9.961-9.961-9.961-5.478 0-9.961 4.482-9.961 9.961 0 2.098.63 4.13 1.797 5.898l-1.214 4.43 4.545-1.189zM18.093 15.39a.5.5 0 0 0-.42-.218c-.282-.141-1.672-.822-1.93-.918-.259-.095-.447-.141-.635.141-.188.282-.729.918-.893 1.103-.164.188-.328.21-.61.07-.282-.141-1.192-.442-2.27-1.401-.84-.748-1.41-1.672-1.574-1.953-.164-.282-.018-.447.123-.589.127-.127.282-.328.42-.492.141-.164.188-.282.282-.471.095-.188.047-.376-.023-.518-.07-.141-.635-1.523-.87-2.08-.234-.557-.47-.47-.635-.47-.164 0-.352-.023-.54-.023-.188 0-.47.07-.71.376-.234.306-.893.87-1.103 1.084-.21.21-.42.469-.47.635-.047.164-.095.352-.095.54 0 .376.518 1.401.589 1.523.07.123 1.17 1.777 2.845 2.527.42.188.766.306 1.02.39.469.164.87.141 1.2.095.376-.047 1.17-.47 1.334-.918.164-.447.164-.822.117-.918-.047-.095-.188-.141-.282-.188z" />
+                        </svg>
+                        <div>
+                            <p>WhatsApp</p>
+                            <p class="text-xs">Instant help</p>
+                        </div>
+                    </a> </div>
+            </div>
+        </div>
+        <div id="bookingConfirmationModal"
+            class="modal hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 opacity-0">
+            <div class="modal-content bg-white w-full max-w-sm rounded-lg shadow-xl p-6 text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4"> <i
+                        data-lucide="check" class="h-6 w-6 text-green-600"></i> </div>
+                <h3 class="text-lg font-medium text-gray-900">Booking Completed!</h3>
+                <div class="mt-2 px-7 py-3">
+                    <p class="text-sm text-gray-500"> Request submitted. </p>
+                </div>
+                <div class="px-4 py-3"> <button id="closeBookingModal"
+                        class="px-4 py-2 bg-green-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-green-600">
+                        OK </button> </div>
+            </div>
+        </div>
+        <nav class="fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t border-gray-200 flex justify-around z-20">
+            <button class="bottom-nav-item flex-1 flex flex-col items-center p-3 text-gray-600"
+                data-content="dashboard"> <i data-lucide="home" class="w-6 h-6 mb-1"></i> <span
+                    class="text-xs" data-i18n="dashboard">Dashboard</span> </button> <button
+                class="bottom-nav-item flex-1 flex flex-col items-center p-3 text-gray-600" data-content="weather"> <i
+                    data-lucide="cloud-sun" class="w-6 h-6 mb-1"></i> <span class="text-xs" data-i18n="weather">Weather</span> </button>
+            <button class="bottom-nav-item flex-1 flex flex-col items-center p-3 text-gray-600" data-content="market">
+                <i data-lucide="trending-up" class="w-6 h-6 mb-1"></i> <span class="text-xs" data-i18n="market">Market</span> </button>
+            <button class="bottom-nav-item flex-1 flex flex-col items-center p-3 text-gray-600"
+                data-content="techniques"> <i data-lucide="sprout" class="w-6 h-6 mb-1"></i> <span
+                    class="text-xs" data-i18n="techniques">Techniques</span> </button> </nav>
+    </div>
+
+    <script>
+        // --- Translations ---
+        const translations = {
+            en: { welcome: 'Welcome', yourCompanion: 'Your Companion', dashboard: 'Dashboard', weather: 'Weather', market: 'Market', techniques: 'Techniques', suggestions: 'Suggestions', equipment: 'Equipment', schemes: 'Schemes', marketplace: 'Marketplace', cropTechniques: 'Crop Techniques', marketPrices: 'Market Prices', soil: 'Soil', basedOn: 'Based on', recommend: 'Recommend: Add DAP.', humidity: 'Humidity', wind: 'Wind', rain: 'Rain (1hr)', viewAll: 'View All', climateAlert: 'Climate Alert', accurateData: 'Accurate data', for: 'For', govtSchemes: 'Govt Schemes', eligibility: 'Eligibility:', likely: 'Likely', learnMore: 'Learn More', sellCrop: 'Sell', equipmentRental: 'Equipment Rental', rentNearYou: 'Rent near you.', bookNow: 'Book Now', aiFarmingAssistant: 'AI Farming Assistant', askMeAnything: 'Ask me anything about farming!', askQuestion: 'Ask a farming question...', help: 'Help', logout: 'Logout', smartFarming: 'Smart Farming',
+            // Crop names
+            wheat: 'Wheat', rice: 'Rice', cotton: 'Cotton', sugarcane: 'Sugarcane', mustard: 'Mustard', maize: 'Maize', basmati: 'Basmati',
+            // Equipment names
+            tractor: 'Tractor', harvester: 'Harvester', rotavator: 'Rotavator', thresher: 'Thresher', plough: 'Plough', waterTanker: 'Water Tanker',
+            // Location words
+            mandi: 'Mandi', statePrice: 'State Price' },
+            
+            hi: { welcome: 'स्वागत है', yourCompanion: 'आपका साथी', dashboard: 'डैशबोर्ड', weather: 'मौसम', market: 'बाज़ार', techniques: 'तकनीक', suggestions: 'सुझाव', equipment: 'उपकरण', schemes: 'योजनाएं', marketplace: 'मंडी', cropTechniques: 'फसल तकनीक', marketPrices: 'बाज़ार भाव', soil: 'मिट्टी', basedOn: 'आधारित', recommend: 'सिफारिश: डीएपी डालें।', humidity: 'नमी', wind: 'हवा', rain: 'बारिश (1घंटा)', viewAll: 'सभी देखें', climateAlert: 'जलवायु चेतावनी', accurateData: 'सटीक डेटा', for: 'के लिए', govtSchemes: 'सरकारी योजनाएं', eligibility: 'पात्रता:', likely: 'संभावित', learnMore: 'और जानें', sellCrop: 'बेचें', equipmentRental: 'उपकरण किराया', rentNearYou: 'आपके पास किराए पर।', bookNow: 'अभी बुक करें', aiFarmingAssistant: 'एआई खेती सहायक', askMeAnything: 'खेती के बारे में कुछ भी पूछें!', askQuestion: 'खेती का सवाल पूछें...', help: 'मदद', logout: 'लॉगआउट', smartFarming: 'स्मार्ट खेती',
+            // Crop names in Hindi
+            wheat: 'गेहूं', rice: 'चावल', cotton: 'कपास', sugarcane: 'गन्ना', mustard: 'सरसों', maize: 'मक्का', basmati: 'बासमती',
+            // Equipment names in Hindi
+            tractor: 'ट्रैक्टर', harvester: 'हार्वेस्टर', rotavator: 'रोटावेटर', thresher: 'थ्रेशर', plough: 'हल', waterTanker: 'पानी की टंकी',
+            // Location words
+            mandi: 'मंडी', statePrice: 'राज्य मूल्य' },
+            
+            pa: { welcome: 'ਸਵਾਗਤ ਹੈ', yourCompanion: 'ਤੁਹਾਡਾ ਸਾਥੀ', dashboard: 'ਡੈਸ਼ਬੋਰਡ', weather: 'ਮੌਸਮ', market: 'ਬਾਜ਼ਾਰ', techniques: 'ਤਕਨੀਕ', suggestions: 'ਸੁਝਾਅ', equipment: 'ਸਾਜ਼-ਸਾਮਾਨ', schemes: 'ਯੋਜਨਾਵਾਂ', marketplace: 'ਮੰਡੀ', cropTechniques: 'ਫਸਲ ਤਕਨੀਕ', marketPrices: 'ਬਾਜ਼ਾਰ ਰੇਟ', soil: 'ਮਿੱਟੀ', basedOn: 'ਆਧਾਰਿਤ', recommend: 'ਸਿਫਾਰਿਸ਼: ਡੀਏਪੀ ਪਾਓ।', humidity: 'ਨਮੀ', wind: 'ਹਵਾ', rain: 'ਮੀਂਹ (1ਘੰਟਾ)', viewAll: 'ਸਾਰੇ ਦੇਖੋ', climateAlert: 'ਜਲਵਾਯੂ ਚੇਤਾਵਨੀ', accurateData: 'ਸਹੀ ਡੇਟਾ', for: 'ਲਈ', govtSchemes: 'ਸਰਕਾਰੀ ਯੋਜਨਾਵਾਂ', eligibility: 'ਯੋਗਤਾ:', likely: 'ਸੰਭਾਵਿਤ', learnMore: 'ਹੋਰ ਜਾਣੋ', sellCrop: 'ਵੇਚੋ', equipmentRental: 'ਸਾਜ਼-ਸਾਮਾਨ ਕਿਰਾਏ', rentNearYou: 'ਤੁਹਾਡੇ ਨੇੜੇ ਕਿਰਾਏ ਤੇ।', bookNow: 'ਹੁਣੇ ਬੁੱਕ ਕਰੋ', aiFarmingAssistant: 'ਏਆਈ ਖੇਤੀ ਸਹਾਇਕ', askMeAnything: 'ਖੇਤੀ ਬਾਰੇ ਕੁਝ ਵੀ ਪੁੱਛੋ!', askQuestion: 'ਖੇਤੀ ਦਾ ਸਵਾਲ ਪੁੱਛੋ...', help: 'ਮਦਦ', logout: 'ਲੌਗਆਉਟ', smartFarming: 'ਸਮਾਰਟ ਖੇਤੀ',
+            // Crop names in Punjabi
+            wheat: 'ਕਣਕ', rice: 'ਚਾਵਲ', cotton: 'ਕਪਾਹ', sugarcane: 'ਗੰਨਾ', mustard: 'ਸਰੋਂ', maize: 'ਮੱਕੀ', basmati: 'ਬਾਸਮਤੀ',
+            // Equipment names in Punjabi
+            tractor: 'ਟਰੈਕਟਰ', harvester: 'ਹਾਰਵੈਸਟਰ', rotavator: 'ਰੋਟਾਵੇਟਰ', thresher: 'ਥ੍ਰੈਸ਼ਰ', plough: 'ਹਲ', waterTanker: 'ਪਾਣੀ ਦੀ ਟੈਂਕੀ',
+            // Location words
+            mandi: 'ਮੰਡੀ', statePrice: 'ਰਾਜ ਕੀਮਤ' },
+            
+            mr: { welcome: 'स्वागत आहे', yourCompanion: 'तुमचा साथी', dashboard: 'डॅशबोर्ड', weather: 'हवामान', market: 'बाजार', techniques: 'तंत्र', suggestions: 'सूचना', equipment: 'उपकरणे', schemes: 'योजना', marketplace: 'मंडी', cropTechniques: 'पीक तंत्र', marketPrices: 'बाजार भाव', soil: 'माती', basedOn: 'आधारित', recommend: 'शिफारस: डीएपी घाला।', humidity: 'आर्द्रता', wind: 'वारा', rain: 'पाऊस (1तास)', viewAll: 'सर्व पहा', climateAlert: 'हवामान इशारा', accurateData: 'अचूक डेटा', for: 'साठी', govtSchemes: 'सरकारी योजना', eligibility: 'पात्रता:', likely: 'शक्य', learnMore: 'अधिक जाणा', sellCrop: 'विक्री', equipmentRental: 'उपकरणे भाड्याने', rentNearYou: 'तुमच्या जवळ भाड्याने.', bookNow: 'आता बुक करा', aiFarmingAssistant: 'एआय शेती सहाय्यक', askMeAnything: 'शेतीबद्दल काहीही विचारा!', askQuestion: 'शेतीचा प्रश्न विचारा...', help: 'मदत', logout: 'लॉगआउट', smartFarming: 'स्मार्ट शेती',
+            // Crop names in Marathi
+            wheat: 'गहू', rice: 'तांदूळ', cotton: 'कापूस', sugarcane: 'ऊस', mustard: 'मोहरी', maize: 'मका', basmati: 'बासमती',
+            // Equipment names in Marathi
+            tractor: 'ट्रॅक्टर', harvester: 'हार्वेस्टर', rotavator: 'रोटावेटर', thresher: 'थ्रेशर', plough: 'नांगर', waterTanker: 'पाण्याची टाकी',
+            // Location words
+            mandi: 'मंडी', statePrice: 'राज्य किंमत' }
+        };
+
+        // --- App State & Data ---
+        const appState = { userAccount: null, userProfile: null, isLoggedIn: false, currentView: 'dashboard', currentBookingItem: null, currentLanguage: 'en', regionalNames: { 'hi': 'किसान साथी', 'pa': 'ਕਿਸਾਨ ਸਾਥੀ', 'mr': 'शेतकरी साथी', 'en': '' }, cropTechniques: { 'wheat': [{ name: 'Zero Tillage', desc: 'Plant directly after paddy harvest. Saves water.', icon: 'wind' }, { name: 'Raised Bed Planting', desc: 'Improves water efficiency.', icon: 'layers' }], 'rice': [{ name: 'Direct Seeded Rice (DSR)', desc: 'Sow seeds directly. Saves water.', icon: 'wind' }, { name: 'Alternate Wetting & Drying (AWD)', desc: 'Water-saving irrigation technique.', icon: 'droplets' }], 'default': [{ name: 'Crop Rotation', desc: 'Improve soil health.', icon: 'refresh-cw' }, { name: 'IPM', desc: 'Manage pests with less chemicals.', icon: 'bug' }] }, cropSuggestionData: { 'haryana': { best: [{ name: 'Wheat (Rabi)', req: 'Cool, dry winters; fertile loamy soil; moderate water.', icon: 'wind' }, { name: 'Rice (Kharif)', req: 'Hot, humid summers; clayey loam; high water.', icon: 'droplets' }, { name: 'Mustard (Rabi)', req: 'Cool season; sandy loam to clay loam; low to moderate water.', icon: 'sun' }], consider: [{ name: 'Sugarcane', req: 'Hot, humid; heavy loam; very high water.', icon: 'thermometer' }, { name: 'Cotton (Kharif)', req: 'Warm, sunny; well-drained deep soil; moderate water.', icon: 'cloud-sun' }], lessSuitable: [{ name: 'Maize (Kharif/Rabi)', req: 'Warm; susceptible to waterlogging.', icon: 'cloud-off' }] }, 'punjab': { best: [{ name: 'Wheat (Rabi)', req: 'Cool, dry winters; fertile loamy soil.', icon: 'wind' }, { name: 'Rice (Kharif)', req: 'Hot, humid summers; high water.', icon: 'droplets' }, { name: 'Maize (Kharif/Spring)', req: 'Warm; well-drained soil.', icon: 'cloud-sun' }], consider: [{ name: 'Cotton (Kharif)', req: 'Warm, sunny; well-drained soil.', icon: 'sun' }, { name: 'Sugarcane', req: 'Hot, humid; high water.', icon: 'thermometer' }], lessSuitable: [{ name: 'Mustard (Rabi)', req: 'Less dominant than wheat.', icon: 'cloud-off' }] }, 'maharashtra': { best: [{ name: 'Sugarcane', req: 'Hot, humid; heavy soil; high water.', icon: 'droplets' }, { name: 'Cotton (Kharif)', req: 'Warm, sunny; black cotton soil.', icon: 'sun' }, { name: 'Soybean (Kharif)', req: 'Warm, humid; well-drained loam.', icon: 'cloud-sun' }], consider: [{ name: 'Onion (Rabi/Kharif)', req: 'Mild climate; careful water management.', icon: 'droplet' }, { name: 'Pulses (Tur, Gram)', req: 'Often rainfed; less water intensive.', icon: 'wind' }], lessSuitable: [{ name: 'Wheat (Rabi)', req: 'Requires cooler winters.', icon: 'thermometer-snowflake' }, { name: 'Rice (Kharif)', req: 'Needs very high rainfall/irrigation.', icon: 'cloud-off' }] }, 'default': { best: [], consider: [], lessSuitable: [] } } };
+        let marketData = [{ name: 'Wheat', mandi: 'Panchkula Mandi', price: 2050, trend: 'up', trendPercent: 2.5 }, { name: 'Rice (Basmati)', mandi: 'Karnal Mandi', price: 3200, trend: 'down', trendPercent: 1.2 }, { name: 'Cotton', mandi: 'Hisar Mandi', price: 6500, trend: 'up', trendPercent: 0.8 }, { name: 'Sugarcane', mandi: 'State Price', price: 380, trend: 'none', trendPercent: 0.0 }, { name: 'Mustard', mandi: 'Rewari Mandi', price: 5400, trend: 'up', trendPercent: 1.5 } /* ... more crops ... */];
+        const equipmentData = [{ name: 'Tractor', price: '₹800 / hour', imageUrl: 'https://images.pexels.com/photos/2132250/pexels-photo-2132250.jpeg?auto=compress&cs=tinysrgb&w=600&h=400' }, { name: 'Harvester', price: '₹1,500 / acre', imageUrl: 'https://images.pexels.com/photos/2255935/pexels-photo-2255935.jpeg?auto=compress&cs=tinysrgb&w=600&h=400' }, { name: 'Rotavator', price: '₹600 / hour', imageUrl: 'https://images.pexels.com/photos/2132227/pexels-photo-2132227.jpeg?auto=compress&cs=tinysrgb&w=600&h=400' }, { name: 'Thresher', price: '₹700 / hour', imageUrl: 'https://images.pexels.com/photos/2131784/pexels-photo-2131784.jpeg?auto=compress&cs=tinysrgb&w=600&h=400' }, { name: 'Plough', price: '₹500 / hour', imageUrl: 'https://images.pexels.com/photos/2252618/pexels-photo-2252618.jpeg?auto=compress&cs=tinysrgb&w=600&h=400' }, { name: 'Water Tanker', price: '₹1000 / trip', imageUrl: 'https://images.pexels.com/photos/327482/pexels-photo-327482.jpeg?auto=compress&cs=tinysrgb&w=600&h=400' }];
+
+        // --- DOM Elements ---
+        const signupView = document.getElementById('signupView');
+        const loginView = document.getElementById('loginView');
+        const bookingView = document.getElementById('bookingView');
+        const mainAppView = document.getElementById('mainAppView');
+        const signupForm = document.getElementById('signupForm');
+        const loginForm = document.getElementById('loginForm');
+        const bookingForm = document.getElementById('bookingForm');
+        const signupErrorEl = document.getElementById('signupError');
+        const loginErrorEl = document.getElementById('loginError');
+        const goToLoginBtn = document.getElementById('goToLogin');
+        const goToSignupBtn = document.getElementById('goToSignup');
+        const bottomNavItems = document.querySelectorAll('.bottom-nav-item');
+        const mainContentDivs = document.querySelectorAll('.main-content');
+        const sidebarItems = document.querySelectorAll('.sidebar-item');
+        const openSidebarButton = document.getElementById('openSidebarButton');
+        const closeSidebarButton = document.getElementById('closeSidebarButton');
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const logoutButton = document.getElementById('logoutButton');
+        const aiHelpButton = document.getElementById('aiHelpButton');
+        const aiHelpModal = document.getElementById('aiHelpModal');
+        const closeAiModal = document.getElementById('closeAiModal');
+        const viewAllPricesBtn = document.getElementById('viewAllPricesBtn');
+        const searchWeatherBtn = document.getElementById('searchWeatherBtn');
+        const locationInput = document.getElementById('locationInput');
+        const weatherErrorEl = document.getElementById('weatherError');
+        const backButton = document.getElementById('backButton');
+        const backFromBooking = document.getElementById('backFromBooking');
+        const bookingConfirmationModal = document.getElementById('bookingConfirmationModal');
+        const closeBookingModal = document.getElementById('closeBookingModal');
+        // Chat elements
+        const chatMessagesEl = document.getElementById('chatMessages');
+        const chatInputEl = document.getElementById('chatInput');
+        const chatSendButton = document.getElementById('chatSendButton');
+        const chatErrorEl = document.getElementById('chatError');
+        const chatLoadingEl = document.getElementById('chatLoading');
+        const apiKeyWarning = document.getElementById('apiKeyWarning');
+        const closeApiWarning = document.getElementById('closeApiWarning');
+
+
+        // --- RENDER FUNCTIONS ---
+        function translateCropName(name) { const cleaned = name.toLowerCase().replace(/\s*\(.*?\)\s*/g, '').trim(); const cropKey = cleaned.replace(/\s+/g, ''); if (translations[appState.currentLanguage] && translations[appState.currentLanguage][cropKey]) return translations[appState.currentLanguage][cropKey]; return name; }
+        function renderMarketPrices(data) { const dash = document.getElementById('dashboardMarketPrices'); const main = document.getElementById('mainMarketPrices'); if (!dash || !main) return; dash.innerHTML = ''; main.innerHTML = ''; data.forEach((c, i) => { let tCol = c.trend === 'up' ? 'text-green-500' : (c.trend === 'down' ? 'text-red-500' : 'text-gray-500'); let tIcon = c.trend === 'up' ? '▲' : (c.trend === 'down' ? '▼' : '▬'); const p = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0 }).format(c.price); const translatedName = translateCropName(c.name); const translatedMandi = c.mandi.includes('State') ? t('statePrice') : c.mandi.replace('Mandi', t('mandi')); const h = ` ${i > 0 ? '<hr class="border-t border-gray-100">' : ''} <div class="flex justify-between items-center py-1"> <div> <p class="font-semibold">${translatedName}</p> <p class="text-sm text-gray-500">${translatedMandi}</p> </div> <div class="text-right"> <p class="font-bold ${tCol.replace('500', '600')}">${p}/qtl</p> <p class="text-sm ${tCol}">${tIcon} ${c.trendPercent}%</p> </div> </div> `; main.innerHTML += h; if (i < 5) dash.innerHTML += h.replace('<hr class="border-t border-gray-100">', i > 0 ? '<hr>' : ''); }); }
+        function renderEquipment() { const cont = document.getElementById('equipmentList'); if (!cont) return; cont.innerHTML = ''; equipmentData.forEach(item => { const equipKey = item.name.toLowerCase().replace(/\s+/g, ''); const translatedName = translations[appState.currentLanguage]?.[equipKey] || item.name; const h = ` <div class="bg-white rounded-lg shadow-md overflow-hidden"> <img src="${item.imageUrl}" alt="${item.name}" class="w-full h-32 object-cover" onerror="this.src='https://placehold.co/300x200/a0eec0/115e59?text=${item.name}'"> <div class="p-4"> <h3 class="font-bold text-lg">${translatedName}</h3> <p class="text-sm text-gray-600">${item.price}</p> <button class="book-now-btn mt-2 w-full bg-green-500 text-white text-sm font-bold py-2 px-3 rounded hover:bg-green-600" data-name="${translatedName}" data-price="${item.price}"> ${t('bookNow')} </button> </div> </div> `; cont.innerHTML += h; }); cont.querySelectorAll('.book-now-btn').forEach(b => b.addEventListener('click', () => showBookingPage(b.dataset.name, b.dataset.price))); } // Listener added here
+        function renderCropTechniques() { const cont = document.getElementById('techniquesList'); const nameEl = document.getElementById('techniquesCropName'); if (!cont || !appState.userProfile) return; const crop = appState.userProfile.cropType.toLowerCase(); nameEl.textContent = appState.userProfile.cropType; let techs = appState.cropTechniques[crop] || appState.cropTechniques['default']; cont.innerHTML = ''; techs.forEach(t => { const h = ` <div class="bg-white p-5 rounded-xl shadow-md"> <div class="flex items-center gap-3 mb-2"> <i data-lucide="${t.icon}" class="w-6 h-6 text-green-600"></i> <h3 class="text-lg font-bold">${t.name}</h3> </div> <p class="text-gray-600">${t.desc}</p> </div> `; cont.innerHTML += h; }); lucide.createIcons(); }
+        function renderCropSuggestions() { const cont = document.getElementById('cropSuggestionsList'); const locEl = document.getElementById('suggestionLocation'); if (!cont || !appState.userProfile) { cont.innerHTML = '<p class="text-red-600">Profile error.</p>'; return; } const userLoc = appState.userProfile.location.toLowerCase(); locEl.textContent = appState.userProfile.location; let sugg = appState.cropSuggestionData['default']; for (const s in appState.cropSuggestionData) if (userLoc.includes(s)) { sugg = appState.cropSuggestionData[s]; break; } cont.innerHTML = ''; const renderL = (t, cs, bg, txt) => { if (!cs || cs.length === 0) return ''; let h = `<h3 class="text-xl font-bold ${txt} mb-3">${t}</h3><div class="space-y-4">`; cs.forEach(c => { h += ` <div class="${bg} p-4 rounded-lg shadow-sm border-l-4 border-current"> <div class="flex items-center gap-3 mb-1"> <i data-lucide="${c.icon || 'leaf'}" class="w-5 h-5 ${txt}"></i> <h4 class="font-semibold text-lg">${c.name}</h4> </div> <p class="text-sm text-gray-700 ml-8">${c.req}</p> </div> `; }); h += '</div>'; return h; }; cont.innerHTML += renderL('Best Suited', sugg.best, 'bg-green-100', 'text-green-700'); cont.innerHTML += renderL('Consider', sugg.consider, 'bg-yellow-100', 'text-yellow-700'); cont.innerHTML += renderL('Less Suitable', sugg.lessSuitable, 'bg-red-100', 'text-red-700'); if (!sugg.best?.length && !sugg.consider?.length && !sugg.lessSuitable?.length) cont.innerHTML = '<p class="text-gray-600">No specific suggestions for this location.</p>'; lucide.createIcons(); }
+
+        // --- REAL DATA FETCHING ---
+        // API base URL - set to localhost:3000 for local development
+        let API_BASE_URL = 'http://127.0.0.1:3000';
+        async function loadConfig() {
+            try {
+                const r = await fetch('http://127.0.0.1:3000/api/config');
+                if (r.ok) {
+                    const cfg = await r.json();
+                    if (cfg.apiBaseUrl) API_BASE_URL = String(cfg.apiBaseUrl).replace(/\/$/, '');
+                }
+            } catch (e) { console.warn('Config load failed; using default localhost:3000'); }
+        }
+        async function fetchRealMarketPrices() { try { const r = await fetch(`${API_BASE_URL}/api/marketprices`); if (!r.ok) throw Error('Failed to fetch market prices'); const d = await r.json(); marketData = d; renderMarketPrices(marketData); } catch (e) { console.error('Fetch market error:', e); console.log('Using default market data'); renderMarketPrices(marketData); } }
+        function getWeatherIcon(code) { const map = { '01d': 'sun', '01n': 'moon', '02d': 'cloud-sun', '02n': 'cloud-moon', '03d': 'cloud', '03n': 'cloud', '04d': 'cloudy', '04n': 'cloudy', '09d': 'cloud-drizzle', '09n': 'cloud-drizzle', '10d': 'cloud-rain', '10n': 'cloud-rain', '11d': 'cloud-lightning', '11n': 'cloud-lightning', '13d': 'cloud-snow', '13n': 'cloud-snow', '50d': 'cloud-fog', '50n': 'cloud-fog' }; return map[code] || 'cloud-sun'; }
+        async function fetchWeather(loc) { console.log(`Fetch weather: ${loc}`); if (weatherErrorEl) weatherErrorEl.classList.add('hidden'); try { const r = await fetch(`${API_BASE_URL}/api/weather?location=${encodeURIComponent(loc)}`); if (!r.ok) { const err = await r.json(); const errorMsg = err.error || 'Fetch failed'; if (errorMsg.includes('missing API key') || errorMsg.includes('Missing API')) { throw Error('Weather service requires API key configuration. Please check server setup.'); } throw Error(errorMsg); } const d = await r.json(); const weatherLocationEl = document.getElementById('weatherLocation'); if (weatherLocationEl) weatherLocationEl.textContent = d.location; const weatherTempEl = document.getElementById('weatherTemp'); if (weatherTempEl) weatherTempEl.textContent = `${Math.round(d.temp)}°C`; const weatherDescEl = document.getElementById('weatherDesc'); if (weatherDescEl) weatherDescEl.textContent = d.desc; const weatherHumidityEl = document.getElementById('weatherHumidity'); if (weatherHumidityEl) weatherHumidityEl.textContent = `${d.humidity}%`; const weatherWindEl = document.getElementById('weatherWind'); if (weatherWindEl) weatherWindEl.textContent = `${d.wind.toFixed(1)} km/h`; const weatherRainEl = document.getElementById('weatherRain'); if (weatherRainEl) weatherRainEl.textContent = `${d.rain.toFixed(1)} mm`; const dashWeatherLocationEl = document.getElementById('dashWeatherLocation'); if (dashWeatherLocationEl) dashWeatherLocationEl.textContent = d.location; const dashWeatherTempEl = document.getElementById('dashWeatherTemp'); if (dashWeatherTempEl) dashWeatherTempEl.textContent = `${Math.round(d.temp)}°C`; const dashWeatherDescEl = document.getElementById('dashWeatherDesc'); if (dashWeatherDescEl) dashWeatherDescEl.textContent = d.desc; const dashWeatherHumidityEl = document.getElementById('dashWeatherHumidity'); if (dashWeatherHumidityEl) dashWeatherHumidityEl.textContent = `${d.humidity}%`; const dashWeatherWindEl = document.getElementById('dashWeatherWind'); if (dashWeatherWindEl) dashWeatherWindEl.textContent = `${d.wind.toFixed(1)} km/h`; const dashWeatherRainEl = document.getElementById('dashWeatherRain'); if (dashWeatherRainEl) dashWeatherRainEl.textContent = `${d.rain.toFixed(1)} mm`; const icon = getWeatherIcon(d.icon); const weatherIconEl = document.getElementById('weatherIcon'); if (weatherIconEl) weatherIconEl.setAttribute('data-lucide', icon); const dashWeatherIconEl = document.getElementById('dashWeatherIcon'); if (dashWeatherIconEl) dashWeatherIconEl.setAttribute('data-lucide', icon); lucide.createIcons(); } catch (e) { console.error('Weather error:', e.message); if (weatherErrorEl) { weatherErrorEl.textContent = `${e.message}`; weatherErrorEl.classList.remove('hidden'); } } }
+
+        // --- AUTH & PROFILE MANAGEMENT ---
+        function saveUserAccount(acc) { localStorage.setItem(`krishiSaathiAccount_${acc.phone}`, JSON.stringify(acc)); }
+        function loadUserAccount(ph) { const s = localStorage.getItem(`krishiSaathiAccount_${ph}`); return s ? JSON.parse(s) : null; }
+        function saveProfile(prof) { appState.userProfile = prof; localStorage.setItem(`krishiSaathiProfile_${prof.phone}`, JSON.stringify(prof)); }
+        function loadProfile(ph) { const s = localStorage.getItem(`krishiSaathiProfile_${ph}`); if (s) { try { appState.userProfile = JSON.parse(s); return appState.userProfile.phone === ph; } catch (e) { console.error("Error parsing profile:", e); return false; } } appState.userProfile = null; return false; } // Added try-catch
+        function setLoggedIn(stat, acc = null) { appState.isLoggedIn = stat; if (stat && acc) { appState.userAccount = acc; localStorage.setItem('krishiSaathiLoggedIn', 'true'); localStorage.setItem('krishiSaathiCurrentUserPhone', acc.phone); } else { appState.userAccount = null; appState.userProfile = null; localStorage.removeItem('krishiSaathiLoggedIn'); localStorage.removeItem('krishiSaathiCurrentUserPhone'); } }
+        function checkLoggedIn() { const li = localStorage.getItem('krishiSaathiLoggedIn') === 'true'; const ph = localStorage.getItem('krishiSaathiCurrentUserPhone'); if (li && ph) { const acc = loadUserAccount(ph); if (acc) { appState.isLoggedIn = true; appState.userAccount = acc; loadProfile(ph); return true; } else { setLoggedIn(false); return false; } } appState.isLoggedIn = false; return false; }
+
+        // --- CORE APP LOGIC ---
+        function showView(viewId) { [signupView, loginView, bookingView, mainAppView].forEach(v => v?.classList.add('hidden')); const v = document.getElementById(viewId); if (v) v.classList.remove('hidden'); else if (signupView) signupView.classList.remove('hidden'); window.scrollTo(0, 0); } // Added null checks
+        function toggleSidebar(open) { if (open) { sidebarOverlay?.classList.remove('hidden'); setTimeout(() => { sidebarMenu?.classList.add('open'); sidebarOverlay?.classList.add('opacity-100'); }, 10); } else { sidebarMenu?.classList.remove('open'); sidebarOverlay?.classList.remove('opacity-100'); setTimeout(() => { sidebarOverlay?.classList.add('hidden'); }, 300); } } // Added null checks
+        function showMainContent(id) { mainContentDivs.forEach(d => d.classList.add('hidden')); const act = document.getElementById(`content_${id}`); if (act) act.classList.remove('hidden'); if (backButton) backButton.classList.toggle('hidden', id === 'dashboard'); bottomNavItems.forEach(i => i.classList.toggle('active', i.dataset.content === id)); sidebarItems.forEach(i => i.classList.toggle('active', i.dataset.content === id)); if (id === 'techniques') renderCropTechniques(); if (id === 'suggestions') renderCropSuggestions(); if (id === 'equipment') renderEquipment(); appState.currentView = id; window.scrollTo(0, 0); toggleSidebar(false); }
+        function t(key) { const lang = appState.currentLanguage || 'en'; return translations[lang]?.[key] || translations.en[key] || key; }
+        function translateUI() { document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.dataset.i18n; if (key) el.textContent = t(key); }); document.querySelectorAll('[data-i18n-placeholder]').forEach(el => { const key = el.dataset.i18nPlaceholder; if (key) el.placeholder = t(key); }); }
+        function changeLanguage(lang) { appState.currentLanguage = lang; if (appState.userProfile) { appState.userProfile.language = lang; saveProfile(appState.userProfile); } translateUI(); updateHeader(); renderMarketPrices(marketData); renderEquipment(); if (appState.currentView === 'techniques') renderCropTechniques(); if (appState.currentView === 'suggestions') renderCropSuggestions(); lucide.createIcons(); }
+        function updateHeader() { if (!appState.userProfile) return; const lang = appState.userProfile.language || 'en'; appState.currentLanguage = lang; const regN = document.getElementById('regionalAppName'); const regW = document.getElementById('regionalWelcome'); const n = appState.regionalNames[lang] || ''; if (regN) regN.textContent = n; if (regW) regW.textContent = n ? `${t('yourCompanion')} - ${n}` : t('yourCompanion'); }
+        function personalizeContent() { if (!appState.userProfile) return; const { name, location, cropType, language } = appState.userProfile; appState.currentLanguage = language || 'en'; const welName = document.getElementById('welcomeName'); if (welName) welName.textContent = `${t('welcome')}, ${name.split(' ')[0]}!`; const locInput = document.getElementById('locationInput'); if (locInput) locInput.value = location; const mc2 = document.getElementById('marketCrop2'); if (mc2) mc2.textContent = cropType || 'crop'; const mLoc = document.getElementById('marketLocation'); if (mLoc) mLoc.textContent = location.split(',')[0] || 'Town'; const sLoc = document.getElementById('soilLocation'); if (sLoc) sLoc.textContent = location; const sCrop = document.getElementById('soilCrop'); if (sCrop) sCrop.textContent = cropType; translateUI(); }
+        function showBookingPage(name, price) { if (!appState.userProfile) return; appState.currentBookingItem = { name, price }; document.getElementById('bookingEquipmentName').textContent = name; document.getElementById('bookingEquipmentPrice').textContent = price; document.getElementById('bookingName').value = appState.userProfile.name; document.getElementById('bookingPhone').value = appState.userProfile.phone; document.getElementById('bookingLocation').value = appState.userProfile.location; const dateInput = document.getElementById('bookingDate'); const today = new Date().toISOString().split('T')[0]; dateInput.setAttribute('min', today); dateInput.value = ''; document.getElementById('bookingDuration').value = ''; showView('bookingView'); }
+        function showBookingConfirmation() { bookingConfirmationModal?.classList.remove('hidden'); setTimeout(() => bookingConfirmationModal?.classList.add('open', 'opacity-100'), 10); } // Added null check
+        function hideBookingConfirmation() { bookingConfirmationModal?.classList.remove('open', 'opacity-100'); setTimeout(() => { bookingConfirmationModal?.classList.add('hidden'); }, 300); } // Corrected logic: ONLY hide modal
+
+        // --- GEMINI CHATBOT LOGIC ---
+        // Calls are proxied through the backend to keep keys secure
+        async function callGeminiAPI(prompt, retries = 3, delay = 1000) {
+            console.log("Calling AI via backend...");
+            chatLoadingEl?.classList.remove('hidden');
+            chatErrorEl?.classList.add('hidden');
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: prompt })
+                });
+
+                if (!response.ok) {
+                    if (response.status === 429 && retries > 0) {
+                        console.warn(`API Rate limit hit. Retrying in ${delay / 1000}s... (${retries} retries left)`);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        return callGeminiAPI(prompt, retries - 1, delay * 2);
+                    }
+                    const errorData = await response.json().catch(() => ({}));
+                    const errorMsg = errorData?.error || response.statusText;
+                    if (errorMsg.includes('missing') || errorMsg.includes('Missing') || errorMsg.includes('API key')) {
+                        throw new Error('AI Assistant requires API key configuration. Please add GEMINI_API_KEY to .env file.');
+                    }
+                    throw new Error(`${errorMsg}`);
+                }
+
+                const result = await response.json();
+                const text = result?.response;
+                if (!text) throw new Error('Received an empty response from the AI.');
+                chatLoadingEl?.classList.add('hidden');
+                return text;
+
+            } catch (error) {
+                console.error("Gemini API call failed:", error);
+                chatLoadingEl?.classList.add('hidden');
+                if (chatErrorEl) chatErrorEl.textContent = `${error.message}`;
+                chatErrorEl?.classList.remove('hidden');
+                return null;
+            }
+        }
+
+        function addChatMessage(message, isUser) {
+            if (!chatMessagesEl) return;
+            const bubble = document.createElement('div');
+            bubble.textContent = message;
+            bubble.classList.add('p-3', 'rounded-lg', 'max-w-[80%]', 'text-sm');
+            if (isUser) {
+                bubble.classList.add('chat-bubble-user', 'ml-auto'); // Align user messages right
+            } else {
+                bubble.classList.add('chat-bubble-ai', 'mr-auto'); // Align AI messages left
+            }
+            chatMessagesEl.appendChild(bubble);
+            chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight; // Scroll to bottom
+        }
+
+        async function handleSendMessage() {
+            const userMessage = chatInputEl?.value?.trim();
+            if (!userMessage) return;
+
+            addChatMessage(userMessage, true); // Display user message
+            if (chatInputEl) chatInputEl.value = ''; // Clear input
+
+            const aiResponse = await callGeminiAPI(userMessage);
+
+            if (aiResponse) {
+                addChatMessage(aiResponse, false); // Display AI response
+            }
+            // Error handling is done within callGeminiAPI by updating chatErrorEl
+        }
+
+
+        // --- EVENT LISTENERS ---
+        function setupEventListeners() {
+            function safeListen(el, ev, hnd, id) { if (el) el.addEventListener(ev, hnd); else console.warn(`Listener setup warning: Element not found for ${id}`); }
+            // Auth
+            safeListen(signupForm, 'submit', (e) => { e.preventDefault(); signupErrorEl.classList.add('hidden'); const ph = signupForm.querySelector('#signupPhone').value; const pw = signupForm.querySelector('#signupPassword').value; const cpw = signupForm.querySelector('#confirmPassword').value; if (pw !== cpw) { signupErrorEl.textContent = 'Passwords mismatch.'; signupErrorEl.classList.remove('hidden'); return; } if (ph.length < 10) { signupErrorEl.textContent = 'Invalid phone.'; signupErrorEl.classList.remove('hidden'); return; } if (loadUserAccount(ph)) { signupErrorEl.textContent = 'Account exists.'; signupErrorEl.classList.remove('hidden'); return; } const prof = { phone: ph, name: signupForm.querySelector('#name').value, age: signupForm.querySelector('#age').value, gender: signupForm.querySelector('#gender').value, language: signupForm.querySelector('#language').value, location: signupForm.querySelector('#location').value, pincode: signupForm.querySelector('#pincode').value, income: signupForm.querySelector('#income').value, familySize: signupForm.querySelector('#familySize').value, landSize: signupForm.querySelector('#landSize').value, cropType: signupForm.querySelector('#cropType').value }; if (!prof.name || !prof.age || !prof.location || !prof.cropType) { signupErrorEl.textContent = 'Fill required fields.'; signupErrorEl.classList.remove('hidden'); return; } const acc = { phone: ph, password: pw }; saveUserAccount(acc); saveProfile(prof); setLoggedIn(true, acc); initializeAppUI(); startDataFetching(); showView('mainAppView'); }, 'signupForm');
+            safeListen(loginForm, 'submit', (e) => { e.preventDefault(); loginErrorEl.classList.add('hidden'); const ph = loginForm.querySelector('#loginPhone').value; const pw = loginForm.querySelector('#loginPassword').value; const acc = loadUserAccount(ph); if (acc && acc.password === pw) { setLoggedIn(true, acc); if (loadProfile(ph)) { initializeAppUI(); startDataFetching(); showView('mainAppView'); } else { console.error("Profile missing:", ph); loginErrorEl.textContent = 'Profile missing.'; loginErrorEl.classList.remove('hidden'); setLoggedIn(false); } } else { loginErrorEl.textContent = 'Invalid details.'; loginErrorEl.classList.remove('hidden'); } }, 'loginForm');
+            safeListen(goToLoginBtn, 'click', () => showView('loginView'), 'goToLoginBtn');
+            safeListen(goToSignupBtn, 'click', () => showView('signupView'), 'goToSignupBtn');
+            // Booking
+            safeListen(bookingForm, 'submit', (e) => {
+                e.preventDefault();
+                if (!appState.userProfile) { console.error("Cannot submit booking without profile."); return; }
+                console.log("Booking:", { item: appState.currentBookingItem, date: bookingForm.querySelector('#bookingDate').value, duration: bookingForm.querySelector('#bookingDuration').value, user: appState.userProfile.name });
+                showView('mainAppView');
+                showMainContent('equipment');
+                showBookingConfirmation();
+            }, 'bookingForm');
+            safeListen(backFromBooking, 'click', () => { showView('mainAppView'); showMainContent('equipment'); }, 'backFromBooking');
+            safeListen(closeBookingModal, 'click', hideBookingConfirmation, 'closeBookingModal');
+            safeListen(bookingConfirmationModal, 'click', (e) => { if (e.target === bookingConfirmationModal) hideBookingConfirmation(); }, 'bookingConfModal');
+            // Main App
+            safeListen(backButton, 'click', () => showMainContent('dashboard'), 'backButton');
+            safeListen(openSidebarButton, 'click', () => toggleSidebar(true), 'openSidebarButton');
+            safeListen(closeSidebarButton, 'click', () => toggleSidebar(false), 'closeSidebarButton');
+            safeListen(sidebarOverlay, 'click', () => toggleSidebar(false), 'sidebarOverlay');
+            safeListen(logoutButton, 'click', () => { if (window.weatherInterval) clearInterval(window.weatherInterval); if (window.marketInterval) clearInterval(window.marketInterval); setLoggedIn(false); showView('loginView'); }, 'logoutButton');
+            sidebarItems.forEach(i => safeListen(i, 'click', (e) => { e.preventDefault(); showMainContent(i.dataset.content); }, `sidebar-${i.dataset.content}`));
+            bottomNavItems.forEach(i => safeListen(i, 'click', () => showMainContent(i.dataset.content), `bottomNav-${i.dataset.content}`));
+            safeListen(viewAllPricesBtn, 'click', () => showMainContent('market'), 'viewAllPricesBtn');
+            safeListen(aiHelpButton, 'click', () => aiHelpModal?.classList.remove('hidden'), 'aiHelpButton');
+            safeListen(closeAiModal, 'click', () => aiHelpModal?.classList.add('hidden'), 'closeAiModal');
+            safeListen(aiHelpModal, 'click', (e) => { if (e.target === aiHelpModal) aiHelpModal?.classList.add('hidden'); }, 'aiHelpModal');
+            safeListen(searchWeatherBtn, 'click', () => { const l = locationInput?.value; if (l) fetchWeather(l); }, 'searchWeatherBtn');
+            safeListen(locationInput, 'keypress', (e) => { if (e.key === 'Enter') { const l = locationInput?.value; if (l) fetchWeather(l); } }, 'locationInput');
+            // Chat Listeners
+            safeListen(chatSendButton, 'click', handleSendMessage, 'chatSendButton');
+            safeListen(chatInputEl, 'keypress', (e) => { if (e.key === 'Enter') handleSendMessage(); }, 'chatInputEl');
+            // API Warning
+            safeListen(closeApiWarning, 'click', () => { apiKeyWarning?.classList.add('hidden'); localStorage.setItem('apiKeyWarningDismissed', 'true'); }, 'closeApiWarning');
+            // Language switcher (if present in DOM)
+            const langSel = document.getElementById('languageSwitcher');
+            safeListen(langSel, 'change', () => { changeLanguage(langSel.value); }, 'languageSwitcher');
+
+        }
+
+        // --- INITIALIZATION ---
+        async function checkAPIKeys() { try { const r = await fetch(`${API_BASE_URL}/api/health`); if (r.ok && apiKeyWarning) { const warningDismissed = localStorage.getItem('apiKeyWarningDismissed'); if (!warningDismissed) { apiKeyWarning.classList.remove('hidden'); lucide.createIcons(); } } } catch (e) { console.warn('Could not check API status'); } }
+        function initializeAppUI() { if (!appState.userProfile) { console.error("No profile."); setLoggedIn(false); showView('loginView'); return; } updateHeader(); personalizeContent(); lucide.createIcons(); renderEquipment(); renderCropTechniques(); showMainContent(appState.currentView); const langSel = document.getElementById('languageSwitcher'); if (langSel && appState.userProfile?.language) langSel.value = appState.userProfile.language; checkAPIKeys(); }
+        function startDataFetching() { if (!appState.userProfile) return; if (appState.userProfile.location) fetchWeather(appState.userProfile.location); else console.warn("No location for weather fetch."); fetchRealMarketPrices(); if (window.weatherInterval) clearInterval(window.weatherInterval); if (window.marketInterval) clearInterval(window.marketInterval); window.weatherInterval = setInterval(() => { if (appState.userProfile?.location) fetchWeather(appState.userProfile.location); }, 600000); window.marketInterval = setInterval(fetchRealMarketPrices, 60000); }
+
+        // --- Main Entry Point ---
+        async function main() {
+            await loadConfig();
+            setupEventListeners();
+            if (checkLoggedIn()) {
+                if (appState.userProfile) { initializeAppUI(); startDataFetching(); showView('mainAppView'); }
+                else { console.error("Logged in but profile missing."); showView('signupView'); /* Force re-signup */ }
+            } else {
+                let showLoginFirst = false; try { for (let i = 0; i < localStorage.length; i++) if (localStorage.key(i)?.startsWith('krishiSaathiAccount_')) { showLoginFirst = true; break; } } catch (e) { console.warn("Could not check localStorage keys."); } // Add try-catch for security errors
+                showView(showLoginFirst ? 'loginView' : 'signupView');
+            }
+            // Ensure icons are created after initial view is shown
+            setTimeout(() => { try { lucide.createIcons(); } catch (e) { console.error("Lucide error:", e); } }, 100);
+        }
+
+        // Run the app when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', main);
+
+        // Inject a simple floating language selector if one is not present in markup
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!document.getElementById('languageSwitcher')) {
+                const wrap = document.createElement('div');
+                wrap.style.position = 'fixed';
+                wrap.style.right = '12px';
+                wrap.style.bottom = '88px';
+                wrap.style.zIndex = '1000';
+                wrap.innerHTML = `
+                    <select id="languageSwitcher" class="bg-white border border-gray-300 rounded-md text-sm p-2 shadow">
+                        <option value="en">English</option>
+                        <option value="hi">हिन्दी</option>
+                        <option value="pa">ਪੰਜਾਬੀ</option>
+                        <option value="mr">मराठी</option>
+                    </select>
+                `;
+                document.body.appendChild(wrap);
+            }
+        });
+
+    </script>
+</body>
+
+</html>
