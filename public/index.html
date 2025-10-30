@@ -784,79 +784,92 @@
         // --- App State & Data ---
         const appState = { userAccount: null, userProfile: null, isLoggedIn: false, currentView: 'dashboard', currentBookingItem: null, currentLanguage: 'en', regionalNames: { 'hi': 'किसान साथी', 'pa': 'ਕਿਸਾਨ ਸਾਥੀ', 'mr': 'शेतकरी साथी', 'en': '' }, cropTechniques: { 'wheat': [{ name: 'Zero Tillage', desc: 'Plant directly after paddy harvest. Saves water.', icon: 'wind' }, { name: 'Raised Bed Planting', desc: 'Improves water efficiency.', icon: 'layers' }], 'rice': [{ name: 'Direct Seeded Rice (DSR)', desc: 'Sow seeds directly. Saves water.', icon: 'wind' }, { name: 'Alternate Wetting & Drying (AWD)', desc: 'Water-saving irrigation technique.', icon: 'droplets' }], 'default': [{ name: 'Crop Rotation', desc: 'Improve soil health.', icon: 'refresh-cw' }, { name: 'IPM', desc: 'Manage pests with less chemicals.', icon: 'bug' }] }, cropSuggestionData: { 'haryana': { best: [{ name: 'Wheat (Rabi)', req: 'Cool, dry winters; fertile loamy soil; moderate water.', icon: 'wind' }, { name: 'Rice (Kharif)', req: 'Hot, humid summers; clayey loam; high water.', icon: 'droplets' }, { name: 'Mustard (Rabi)', req: 'Cool season; sandy loam to clay loam; low to moderate water.', icon: 'sun' }], consider: [{ name: 'Sugarcane', req: 'Hot, humid; heavy loam; very high water.', icon: 'thermometer' }, { name: 'Cotton (Kharif)', req: 'Warm, sunny; well-drained deep soil; moderate water.', icon: 'cloud-sun' }], lessSuitable: [{ name: 'Maize (Kharif/Rabi)', req: 'Warm; susceptible to waterlogging.', icon: 'cloud-off' }] }, 'punjab': { best: [{ name: 'Wheat (Rabi)', req: 'Cool, dry winters; fertile loamy soil.', icon: 'wind' }, { name: 'Rice (Kharif)', req: 'Hot, humid summers; high water.', icon: 'droplets' }, { name: 'Maize (Kharif/Spring)', req: 'Warm; well-drained soil.', icon: 'cloud-sun' }], consider: [{ name: 'Cotton (Kharif)', req: 'Warm, sunny; well-drained soil.', icon: 'sun' }, { name: 'Sugarcane', req: 'Hot, humid; high water.', icon: 'thermometer' }], lessSuitable: [{ name: 'Mustard (Rabi)', req: 'Less dominant than wheat.', icon: 'cloud-off' }] }, 'maharashtra': { best: [{ name: 'Sugarcane', req: 'Hot, humid; heavy soil; high water.', icon: 'droplets' }, { name: 'Cotton (Kharif)', req: 'Warm, sunny; black cotton soil.', icon: 'sun' }, { name: 'Soybean (Kharif)', req: 'Warm, humid; well-drained loam.', icon: 'cloud-sun' }], consider: [{ name: 'Onion (Rabi/Kharif)', req: 'Mild climate; careful water management.', icon: 'droplet' }, { name: 'Pulses (Tur, Gram)', req: 'Often rainfed; less water intensive.', icon: 'wind' }], lessSuitable: [{ name: 'Wheat (Rabi)', req: 'Requires cooler winters.', icon: 'thermometer-snowflake' }, { name: 'Rice (Kharif)', req: 'Needs very high rainfall/irrigation.', icon: 'cloud-off' }] }, 'default': { best: [], consider: [], lessSuitable: [] } } };
         
-        // Regional market data - will be filtered based on user location
-        const allMarketData = {
+        // Regional market data - crops available based on region
+        const regionalCropsData = {
             'haryana': [
-                { name: 'Wheat', mandi: 'Panchkula Mandi', price: 2050, trend: 'up', trendPercent: 2.5 },
-                { name: 'Rice (Basmati)', mandi: 'Karnal Mandi', price: 3200, trend: 'down', trendPercent: 1.2 },
-                { name: 'Mustard', mandi: 'Rewari Mandi', price: 5400, trend: 'up', trendPercent: 1.5 },
-                { name: 'Cotton', mandi: 'Hisar Mandi', price: 6500, trend: 'up', trendPercent: 0.8 },
-                { name: 'Sugarcane', mandi: 'Panipat Mandi', price: 380, trend: 'stable', trendPercent: 0.0 },
-                { name: 'Maize', mandi: 'Rohtak Mandi', price: 1850, trend: 'up', trendPercent: 1.8 },
-                { name: 'Bajra', mandi: 'Bhiwani Mandi', price: 2100, trend: 'stable', trendPercent: 0.5 },
-                { name: 'Gram', mandi: 'Jind Mandi', price: 5200, trend: 'up', trendPercent: 2.2 }
+                { name: 'Wheat', price: 2050, trend: 'up', trendPercent: 2.5 },
+                { name: 'Rice (Basmati)', price: 3200, trend: 'down', trendPercent: 1.2 },
+                { name: 'Mustard', price: 5400, trend: 'up', trendPercent: 1.5 },
+                { name: 'Cotton', price: 6500, trend: 'up', trendPercent: 0.8 },
+                { name: 'Sugarcane', price: 380, trend: 'stable', trendPercent: 0.0 },
+                { name: 'Maize', price: 1850, trend: 'up', trendPercent: 1.8 },
+                { name: 'Bajra', price: 2100, trend: 'stable', trendPercent: 0.5 },
+                { name: 'Gram', price: 5200, trend: 'up', trendPercent: 2.2 }
             ],
             'punjab': [
-                { name: 'Wheat', mandi: 'Ludhiana Mandi', price: 2080, trend: 'up', trendPercent: 2.8 },
-                { name: 'Rice (Basmati)', mandi: 'Amritsar Mandi', price: 3300, trend: 'stable', trendPercent: 0.5 },
-                { name: 'Maize', mandi: 'Patiala Mandi', price: 1900, trend: 'up', trendPercent: 2.0 },
-                { name: 'Cotton', mandi: 'Bathinda Mandi', price: 6600, trend: 'up', trendPercent: 1.2 },
-                { name: 'Sugarcane', mandi: 'Jalandhar Mandi', price: 390, trend: 'stable', trendPercent: 0.0 },
-                { name: 'Potato', mandi: 'Hoshiarpur Mandi', price: 1200, trend: 'down', trendPercent: 0.8 },
-                { name: 'Onion', mandi: 'Moga Mandi', price: 2200, trend: 'up', trendPercent: 3.5 },
-                { name: 'Mustard', mandi: 'Sangrur Mandi', price: 5500, trend: 'up', trendPercent: 1.8 }
+                { name: 'Wheat', price: 2080, trend: 'up', trendPercent: 2.8 },
+                { name: 'Rice (Basmati)', price: 3300, trend: 'stable', trendPercent: 0.5 },
+                { name: 'Maize', price: 1900, trend: 'up', trendPercent: 2.0 },
+                { name: 'Cotton', price: 6600, trend: 'up', trendPercent: 1.2 },
+                { name: 'Sugarcane', price: 390, trend: 'stable', trendPercent: 0.0 },
+                { name: 'Potato', price: 1200, trend: 'down', trendPercent: 0.8 },
+                { name: 'Onion', price: 2200, trend: 'up', trendPercent: 3.5 },
+                { name: 'Mustard', price: 5500, trend: 'up', trendPercent: 1.8 }
             ],
             'maharashtra': [
-                { name: 'Sugarcane', mandi: 'Pune Mandi', price: 350, trend: 'stable', trendPercent: 0.2 },
-                { name: 'Cotton', mandi: 'Nagpur Mandi', price: 6800, trend: 'up', trendPercent: 1.5 },
-                { name: 'Soybean', mandi: 'Latur Mandi', price: 4200, trend: 'up', trendPercent: 2.5 },
-                { name: 'Onion', mandi: 'Nashik Mandi', price: 2500, trend: 'up', trendPercent: 4.2 },
-                { name: 'Tur Dal', mandi: 'Aurangabad Mandi', price: 6200, trend: 'stable', trendPercent: 0.8 },
-                { name: 'Gram', mandi: 'Akola Mandi', price: 5100, trend: 'up', trendPercent: 1.9 },
-                { name: 'Wheat', mandi: 'Solapur Mandi', price: 1950, trend: 'stable', trendPercent: 0.3 },
-                { name: 'Rice', mandi: 'Kolhapur Mandi', price: 2900, trend: 'down', trendPercent: 1.1 }
+                { name: 'Sugarcane', price: 350, trend: 'stable', trendPercent: 0.2 },
+                { name: 'Cotton', price: 6800, trend: 'up', trendPercent: 1.5 },
+                { name: 'Soybean', price: 4200, trend: 'up', trendPercent: 2.5 },
+                { name: 'Onion', price: 2500, trend: 'up', trendPercent: 4.2 },
+                { name: 'Tur Dal', price: 6200, trend: 'stable', trendPercent: 0.8 },
+                { name: 'Gram', price: 5100, trend: 'up', trendPercent: 1.9 },
+                { name: 'Wheat', price: 1950, trend: 'stable', trendPercent: 0.3 },
+                { name: 'Rice', price: 2900, trend: 'down', trendPercent: 1.1 }
             ],
             'uttar pradesh': [
-                { name: 'Wheat', mandi: 'Meerut Mandi', price: 2030, trend: 'up', trendPercent: 2.3 },
-                { name: 'Rice', mandi: 'Lucknow Mandi', price: 3100, trend: 'stable', trendPercent: 0.7 },
-                { name: 'Sugarcane', mandi: 'State Price', price: 370, trend: 'stable', trendPercent: 0.0 },
-                { name: 'Potato', mandi: 'Agra Mandi', price: 1100, trend: 'down', trendPercent: 1.5 },
-                { name: 'Maize', mandi: 'Aligarh Mandi', price: 1820, trend: 'up', trendPercent: 1.6 },
-                { name: 'Mustard', mandi: 'Bareilly Mandi', price: 5350, trend: 'up', trendPercent: 1.4 },
-                { name: 'Onion', mandi: 'Varanasi Mandi', price: 2300, trend: 'up', trendPercent: 3.8 }
+                { name: 'Wheat', price: 2030, trend: 'up', trendPercent: 2.3 },
+                { name: 'Rice', price: 3100, trend: 'stable', trendPercent: 0.7 },
+                { name: 'Sugarcane', price: 370, trend: 'stable', trendPercent: 0.0 },
+                { name: 'Potato', price: 1100, trend: 'down', trendPercent: 1.5 },
+                { name: 'Maize', price: 1820, trend: 'up', trendPercent: 1.6 },
+                { name: 'Mustard', price: 5350, trend: 'up', trendPercent: 1.4 },
+                { name: 'Onion', price: 2300, trend: 'up', trendPercent: 3.8 }
             ],
             'delhi': [
-                { name: 'Wheat', mandi: 'Azadpur Mandi', price: 2100, trend: 'up', trendPercent: 2.7 },
-                { name: 'Rice (Basmati)', mandi: 'Najafgarh Mandi', price: 3250, trend: 'stable', trendPercent: 0.6 },
-                { name: 'Potato', mandi: 'Azadpur Mandi', price: 1250, trend: 'down', trendPercent: 1.2 },
-                { name: 'Onion', mandi: 'Azadpur Mandi', price: 2400, trend: 'up', trendPercent: 4.0 },
-                { name: 'Tomato', mandi: 'Ghazipur Mandi', price: 3500, trend: 'up', trendPercent: 5.5 },
-                { name: 'Cauliflower', mandi: 'Azadpur Mandi', price: 1800, trend: 'stable', trendPercent: 0.4 }
+                { name: 'Wheat', price: 2100, trend: 'up', trendPercent: 2.7 },
+                { name: 'Rice (Basmati)', price: 3250, trend: 'stable', trendPercent: 0.6 },
+                { name: 'Potato', price: 1250, trend: 'down', trendPercent: 1.2 },
+                { name: 'Onion', price: 2400, trend: 'up', trendPercent: 4.0 },
+                { name: 'Tomato', price: 3500, trend: 'up', trendPercent: 5.5 },
+                { name: 'Cauliflower', price: 1800, trend: 'stable', trendPercent: 0.4 }
             ],
             'default': [
-                { name: 'Wheat', mandi: 'Local Mandi', price: 2050, trend: 'up', trendPercent: 2.5 },
-                { name: 'Rice', mandi: 'Local Mandi', price: 3200, trend: 'stable', trendPercent: 0.8 },
-                { name: 'Cotton', mandi: 'Local Mandi', price: 6500, trend: 'up', trendPercent: 0.8 },
-                { name: 'Sugarcane', mandi: 'State Price', price: 380, trend: 'stable', trendPercent: 0.0 },
-                { name: 'Mustard', mandi: 'Local Mandi', price: 5400, trend: 'up', trendPercent: 1.5 },
-                { name: 'Maize', mandi: 'Local Mandi', price: 1850, trend: 'up', trendPercent: 1.8 },
-                { name: 'Potato', mandi: 'Local Mandi', price: 1200, trend: 'down', trendPercent: 1.0 },
-                { name: 'Onion', mandi: 'Local Mandi', price: 2200, trend: 'up', trendPercent: 3.5 }
+                { name: 'Wheat', price: 2050, trend: 'up', trendPercent: 2.5 },
+                { name: 'Rice', price: 3200, trend: 'stable', trendPercent: 0.8 },
+                { name: 'Cotton', price: 6500, trend: 'up', trendPercent: 0.8 },
+                { name: 'Sugarcane', price: 380, trend: 'stable', trendPercent: 0.0 },
+                { name: 'Mustard', price: 5400, trend: 'up', trendPercent: 1.5 },
+                { name: 'Maize', price: 1850, trend: 'up', trendPercent: 1.8 },
+                { name: 'Potato', price: 1200, trend: 'down', trendPercent: 1.0 },
+                { name: 'Onion', price: 2200, trend: 'up', trendPercent: 3.5 }
             ]
         };
         
         // Function to get market data based on user location
         function getMarketDataForLocation(location) {
             const loc = location.toLowerCase();
-            for (const region in allMarketData) {
+            const cityName = location.split(',')[0].trim(); // Extract city name
+            
+            // Find region-specific crops
+            let crops = regionalCropsData['default'];
+            for (const region in regionalCropsData) {
                 if (loc.includes(region)) {
-                    return allMarketData[region];
+                    crops = regionalCropsData[region];
+                    break;
                 }
             }
-            return allMarketData['default'];
+            
+            // Add user's location to all mandi names
+            return crops.map(crop => ({
+                ...crop,
+                mandi: crop.name.toLowerCase().includes('sugarcane') ? 'State Price' : `${cityName} Mandi`
+            }));
         }
         
-        let marketData = allMarketData['default'];
+        let marketData = regionalCropsData['default'].map(crop => ({
+            ...crop,
+            mandi: crop.name.toLowerCase().includes('sugarcane') ? 'State Price' : 'Local Mandi'
+        }));
         const equipmentData = [{ name: 'Tractor', price: '₹800 / hour', imageUrl: 'https://images.pexels.com/photos/2132250/pexels-photo-2132250.jpeg?auto=compress&cs=tinysrgb&w=600&h=400' }, { name: 'Harvester', price: '₹1,500 / acre', imageUrl: 'https://images.pexels.com/photos/2255935/pexels-photo-2255935.jpeg?auto=compress&cs=tinysrgb&w=600&h=400' }, { name: 'Rotavator', price: '₹600 / hour', imageUrl: 'https://images.pexels.com/photos/2132227/pexels-photo-2132227.jpeg?auto=compress&cs=tinysrgb&w=600&h=400' }, { name: 'Thresher', price: '₹700 / hour', imageUrl: 'https://images.pexels.com/photos/2131784/pexels-photo-2131784.jpeg?auto=compress&cs=tinysrgb&w=600&h=400' }, { name: 'Plough', price: '₹500 / hour', imageUrl: 'https://images.pexels.com/photos/2252618/pexels-photo-2252618.jpeg?auto=compress&cs=tinysrgb&w=600&h=400' }, { name: 'Water Tanker', price: '₹1000 / trip', imageUrl: 'https://images.pexels.com/photos/327482/pexels-photo-327482.jpeg?auto=compress&cs=tinysrgb&w=600&h=400' }];
 
         // --- DOM Elements ---
