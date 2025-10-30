@@ -10,6 +10,7 @@ const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 app.use(cors()); // Enable CORS for all routes
 app.use(express.json()); // Parse JSON bodies
 app.use(express.static(__dirname)); // Serve static files from current directory
+app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from public directory
 
 // ========================================================================
 // --- PASTE YOUR API KEYS HERE ---
@@ -24,7 +25,7 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
 
 // --- Root Route - Redirect to HTML ---
 app.get('/', (req, res) => {
-    res.redirect('/KrishiSaathi.html');
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // --- API Endpoint for Weather ---
@@ -176,7 +177,7 @@ app.get('/api/marketprices', (req, res) => {
 if (process.env.NODE_ENV !== 'production') {
     app.listen(port, () => {
         console.log(`KrishiSaathi backend server is running on http://localhost:${port}`);
-        console.log(`Open http://127.0.0.1:${port}/KrishiSaathi.html in your browser`);
+        console.log(`Open http://127.0.0.1:${port} in your browser`);
         console.log('Waiting for requests from the app...');
         console.log('\nIMPORTANT: Add your API keys to the .env file:');
         console.log('- OPENWEATHERMAP_API_KEY (get from https://openweathermap.org/api)');
