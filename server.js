@@ -172,13 +172,18 @@ app.get('/api/marketprices', (req, res) => {
 });
 
 
-// Start the server
-app.listen(port, () => {
-    console.log(`KrishiSaathi backend server is running on http://localhost:${port}`);
-    console.log(`Open http://127.0.0.1:${port}/KrishiSaathi.html in your browser`);
-    console.log('Waiting for requests from the app...');
-    console.log('\nIMPORTANT: Add your API keys to the .env file:');
-    console.log('- OPENWEATHERMAP_API_KEY (get from https://openweathermap.org/api)');
-    console.log('- GEMINI_API_KEY (get from https://makersuite.google.com/app/apikey)');
-});
+// Start the server (only in local development)
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(port, () => {
+        console.log(`KrishiSaathi backend server is running on http://localhost:${port}`);
+        console.log(`Open http://127.0.0.1:${port}/KrishiSaathi.html in your browser`);
+        console.log('Waiting for requests from the app...');
+        console.log('\nIMPORTANT: Add your API keys to the .env file:');
+        console.log('- OPENWEATHERMAP_API_KEY (get from https://openweathermap.org/api)');
+        console.log('- GEMINI_API_KEY (get from https://makersuite.google.com/app/apikey)');
+    });
+}
+
+// Export for Vercel serverless
+module.exports = app;
 
