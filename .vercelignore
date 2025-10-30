@@ -1,0 +1,11 @@
+node_modules
+.env
+.git
+.DS_Store
+.vscode
+*.md
+FIXES_SUMMARY.md
+MULTI-LANGUAGE.md
+SETUP.md
+START_HERE.md
+VERCEL_DEPLOYMENT.md
